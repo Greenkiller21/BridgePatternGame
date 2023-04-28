@@ -1,4 +1,4 @@
-package game.characters.weapons;
+package game.weapons;
 
 import game.IRenderable;
 

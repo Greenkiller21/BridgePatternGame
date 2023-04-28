@@ -1,26 +1,30 @@
+package game;
+
+import game.gameObjects.GameObject;
+
 import java.awt.*;
 import java.util.LinkedList;
 
 public class GameHandler {
-    private LinkedList<IRenderable> renderables = new LinkedList<>();
+    private final LinkedList<GameObject> objects = new LinkedList<>();
 
     public void render(Graphics g) {
-        for (IRenderable renderable : renderables) {
-            renderable.render(g);
+        for (GameObject obj : objects) {
+            obj.render(g);
         }
     }
 
     public void tick() {
-        for (IRenderable renderable : renderables) {
-            renderable.tick();
+        for (GameObject obj : objects) {
+            obj.tick();
         }
     }
 
-    public void addRenderable(IRenderable renderable) {
-        renderables.add(renderable);
+    public void addGameObject(GameObject obj) {
+        objects.add(obj);
     }
 
-    public void removeRenderable(IRenderable renderable) {
-        renderables.remove(renderable);
+    public void removeGameObject(GameObject obj) {
+        objects.remove(obj);
     }
 }

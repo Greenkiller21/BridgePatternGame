@@ -1,6 +1,6 @@
-package game.characters.weapons.physical;
+package game.weapons.physical;
 
-import game.characters.weapons.Weapon;
+import game.weapons.Weapon;
 
 public abstract class PhysicalWeapon extends Weapon {
 }

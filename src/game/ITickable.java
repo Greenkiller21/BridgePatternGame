@@ -1,2 +1,5 @@
-package game;public interface ITickable {
+package game;
+
+public interface ITickable {
+    void tick();
 }

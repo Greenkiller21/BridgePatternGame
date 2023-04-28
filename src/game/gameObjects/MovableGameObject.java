@@ -1,7 +1,7 @@
-package game;
+package game.gameObjects;
 
 public abstract class MovableGameObject extends GameObject {
-    double velX, velY;
+    protected double velX, velY;
 
     public MovableGameObject(int x, int y) {
         super(x, y);

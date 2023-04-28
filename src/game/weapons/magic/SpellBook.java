@@ -1,6 +1,7 @@
-package game.characters.weapons.magic;
+package game.weapons.magic;
 
-import game.characters.weapons.Weapon;
+import game.weapons.Weapon;
 
-public class SpellBook extends Weapon {
+public abstract class SpellBook extends Weapon {
+
 }

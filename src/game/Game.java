@@ -1,20 +1,35 @@
+package game;
+
+import game.gameObjects.MovableGameObject;
+
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable {
     private boolean isRunning = false;
     private Thread thread;
-    private GameHandler handler;
+    private final GameHandler handler;
+    private final Window window;
 
     public Game() {
-        new Window(1000, 600, "Game - Bridge pattern", this);
-        start();
+        window = new Window(1000, 600, "Game - Bridge pattern", this);
         handler = new GameHandler();
+        start();
 
-        handler.addRenderable(new MovableGameObject(10, 10) {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+        });
+
+        MovableGameObject mgo = new MovableGameObject(10, 10) {
             @Override
             public void tick() {
-                velY += 1;
+                x += velX;
+                y += velY;
             }
 
             @Override
@@ -27,7 +42,9 @@ public class Game extends Canvas implements Runnable {
             public Rectangle getBounds() {
                 return null;
             }
-        });
+        };
+        mgo.setVelY(1);
+        handler.addGameObject(mgo);
     }
 
     private void start() {
@@ -88,6 +105,10 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
+        Dimension cs = window.getCurrentSize();
+
+        g.setColor(Color.white);
+        g.fillRect(0, 0, cs.width, cs.height);
 
         handler.render(g);
 

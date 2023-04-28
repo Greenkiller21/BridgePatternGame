@@ -1,7 +1,10 @@
-package game;
+package game.gameObjects;
 
-public abstract class GameObject implements IRenderable {
-    private int x, y;
+import game.IRenderable;
+import game.ITickable;
+
+public abstract class GameObject implements IRenderable, ITickable {
+    protected int x, y;
 
     public GameObject(int x, int y) {
         this.x = x;
