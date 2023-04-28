@@ -1,10 +1,10 @@
 package game.playerTypes;
 
-import java.awt.*;
+import game.characters.Character;
 
-public class AI extends ControllableEntitiy {
-    public AI(int x, int y) {
-        super(x, y);
+public class AI extends ControllableEntity {
+    public AI(int x, int y, Character character) {
+        super(x, y, character);
     }
 
     @Override

@@ -1,9 +1,10 @@
 package game.gameObjects;
 
+import game.ICollidable;
 import game.IRenderable;
 import game.ITickable;
 
-public abstract class GameObject implements IRenderable, ITickable {
+public abstract class GameObject implements IRenderable, ITickable, ICollidable {
     protected int x, y;
 
     public GameObject(int x, int y) {

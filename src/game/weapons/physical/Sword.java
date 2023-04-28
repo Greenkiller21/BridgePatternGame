@@ -4,12 +4,8 @@ import java.awt.*;
 
 public class Sword extends PhysicalWeapon {
     @Override
-    public void render(Graphics g) {
-
-    }
-
-    @Override
-    public Rectangle getBounds() {
-        return null;
+    public void render(Graphics g, int x, int y) {
+        g.setColor(Color.GRAY);
+        g.fillRect(x + 1, y + 1, 2, 5);
     }
 }
