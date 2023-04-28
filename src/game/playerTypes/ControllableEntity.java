@@ -1,14 +1,15 @@
 package game.playerTypes;
 
+import game.Game;
 import game.ICollidable;
 import game.characters.Character;
+import game.gameObjects.GameObject;
 import game.gameObjects.MovableGameObject;
 
 import java.awt.*;
 
 public abstract class ControllableEntity extends MovableGameObject {
     protected Character character;
-    private double dx, dy;
 
     public ControllableEntity(int x, int y, Character character) {
         super(x, y);
@@ -22,20 +23,17 @@ public abstract class ControllableEntity extends MovableGameObject {
 
     @Override
     public void onCollide(ICollidable other) {
+        //use damage / heal / ... and not onCollide
+
+        if (other instanceof GameObject o) {
+
+        }
+
         character.onCollide(other);
     }
 
     @Override
     public Rectangle getCollider() {
         return character.getCollider();
-    }
-
-    @Override
-    public void tick() {
-        dx += velX;
-        dy -= velY;
-
-        x = (int)Math.round(dx);
-        y = (int)Math.round(dy);
     }
 }

@@ -15,12 +15,14 @@ public class GameHandler {
     }
 
     public void tick() {
-        for (GameObject obj : objects) {
+        LinkedList<GameObject> tempObjects = (LinkedList<GameObject>) objects.clone();
+
+        for (GameObject obj : tempObjects) {
             obj.tick();
         }
 
-        for (GameObject src : objects) {
-            for (GameObject dest : objects) {
+        for (GameObject src : tempObjects) {
+            for (GameObject dest : tempObjects) {
                 if (src == dest) {
                     continue;
                 }

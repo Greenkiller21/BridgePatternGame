@@ -1,5 +1,6 @@
 package game.gameObjects;
 
+import game.Game;
 import game.ICollidable;
 import game.IRenderable;
 import game.ITickable;
@@ -26,5 +27,9 @@ public abstract class GameObject implements IRenderable, ITickable, ICollidable 
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void destroy() {
+        Game.getInstance().getGameHandler().removeGameObject(this);
     }
 }

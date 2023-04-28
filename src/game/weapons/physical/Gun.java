@@ -2,7 +2,7 @@ package game.weapons.physical;
 
 import java.awt.*;
 
-public class Sword extends PhysicalWeapon {
+public class Gun extends PhysicalWeapon {
     @Override
     public void render(Graphics g, int x, int y) {
         g.setColor(Color.GRAY);

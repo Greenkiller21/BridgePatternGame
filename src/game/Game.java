@@ -5,28 +5,31 @@ import game.characters.Elf;
 import game.playerTypes.AI;
 import game.playerTypes.Player;
 import game.weapons.magic.IceSpellBook;
-import game.weapons.physical.Sword;
+import game.weapons.physical.Gun;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable {
+    private static Game instance;
+    private final GameHandler handler = new GameHandler();
     private boolean isRunning = false;
     private Thread thread;
-    private final GameHandler handler;
     private final Window window;
     private int currentFps = 0;
 
-    public Game() {
+    private Game() {
         window = new Window(1000, 600, "Game - Bridge pattern", this);
-        handler = new GameHandler();
+    }
+
+    private void beginGame() {
         start();
 
-        Player p = new Player(10, 10, new Elf(new IceSpellBook()));
-        p.bindListeners(this);
+        handler.addGameObject(new Player(10, 10, new Elf(new IceSpellBook())));
 
-        handler.addGameObject(p);
-        handler.addGameObject(new AI(30, 10, new Dwarf(new Sword())));
+        for (int i = 0; i < 100; ++i) {
+            handler.addGameObject(new AI(30, 10, new Dwarf(new Gun())));
+        }
     }
 
     private void start() {
@@ -122,7 +125,16 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
 
+    public GameHandler getGameHandler() {
+        return handler;
+    }
+
+    public static Game getInstance() {
+        return instance;
+    }
+
     public static void main(String[] args) {
-        new Game();
+        instance = new Game();
+        instance.beginGame();
     }
 }
