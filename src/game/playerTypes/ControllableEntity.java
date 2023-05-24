@@ -5,6 +5,8 @@ import game.ICollidable;
 import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.gameObjects.MovableGameObject;
+import game.projectiles.Bullet;
+import game.projectiles.Projectile;
 
 import java.awt.*;
 
@@ -25,9 +27,11 @@ public abstract class ControllableEntity extends MovableGameObject {
     public void onCollide(ICollidable other) {
         //use damage / heal / ... and not onCollide
 
-        if (other instanceof GameObject o) {
-
-        }
+        /*switch (other) {
+            case Projectile projectile -> character.damage(projectile);
+            default ->
+                    throw new IllegalStateException("Unexpected value: " + other);
+        }*/
 
         character.onCollide(other);
     }
