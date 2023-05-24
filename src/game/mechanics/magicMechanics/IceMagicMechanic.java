@@ -1,8 +1,8 @@
-package game.weapons.magic;
+package game.mechanics.magicMechanics;
 
 import java.awt.*;
 
-public class IceSpellBook extends SpellBook {
+public class IceMagicMechanic extends MagicMechanic {
     @Override
     public void render(Graphics g, int x, int y) {
         g.setColor(Color.GRAY);

@@ -1,13 +1,13 @@
 package game.characters;
 
 import game.ICollidable;
-import game.weapons.Weapon;
+import game.mechanics.Mechanic;
 
 import java.awt.*;
 
 public class Dwarf extends Character {
-    public Dwarf(Weapon weapon) {
-        super(weapon);
+    public Dwarf(Mechanic mechanic) {
+        super(mechanic);
     }
 
     @Override

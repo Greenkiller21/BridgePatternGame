@@ -2,31 +2,31 @@ package game.characters;
 
 import game.ICollidable;
 import game.IRenderable;
-import game.weapons.Weapon;
+import game.mechanics.Mechanic;
 
 import java.awt.*;
 
 public abstract class Character implements IRenderable, ICollidable {
-    protected Weapon weapon;
+    protected Mechanic mechanic;
     private int lastX, lastY;
 
-    public Character(Weapon weapon) {
-        this.weapon = weapon;
+    public Character(Mechanic mechanic) {
+        this.mechanic = mechanic;
     }
 
     @Override
     public void render(Graphics g, int x, int y) {
         lastX = x;
         lastY = y;
-        weapon.render(g, x, y);
+        mechanic.render(g, x, y);
     }
 
-    public Weapon getWeapon() {
-        return weapon;
+    public Mechanic getWeapon() {
+        return mechanic;
     }
 
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
+    public void setWeapon(Mechanic mechanic) {
+        this.mechanic = mechanic;
     }
 
     @Override

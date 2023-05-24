@@ -1,13 +1,13 @@
 package game.characters;
 
 import game.ICollidable;
-import game.weapons.Weapon;
+import game.mechanics.Mechanic;
 
 import java.awt.*;
 
 public class Elf extends Character {
-    public Elf(Weapon weapon) {
-        super(weapon);
+    public Elf(Mechanic mechanic) {
+        super(mechanic);
     }
 
     @Override

@@ -4,8 +4,8 @@ import game.characters.Dwarf;
 import game.characters.Elf;
 import game.playerTypes.AI;
 import game.playerTypes.Player;
-import game.weapons.magic.IceSpellBook;
-import game.weapons.physical.Gun;
+import game.mechanics.magicMechanics.IceMagicMechanic;
+import game.mechanics.physicalMechanics.GunMechanic;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -25,10 +25,10 @@ public class Game extends Canvas implements Runnable {
     private void beginGame() {
         start();
 
-        handler.addGameObject(new Player(10, 10, new Elf(new IceSpellBook())));
+        handler.addGameObject(new Player(10, 10, new Elf(new IceMagicMechanic())));
 
         for (int i = 0; i < 100; ++i) {
-            handler.addGameObject(new AI(30, 10, new Dwarf(new Gun())));
+            handler.addGameObject(new AI(30, 10, new Dwarf(new GunMechanic())));
         }
     }
 
