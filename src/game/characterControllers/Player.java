@@ -1,4 +1,4 @@
-package game.playerTypes;
+package game.characterControllers;
 
 import game.Game;
 import game.Utils;
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
-public class Player extends ControllableEntity {
+public class Player extends CharacterController {
     private static final double SPEED = 2.0;
 
     private boolean isUpPressed = false;
@@ -71,16 +71,15 @@ public class Player extends ControllableEntity {
         }
     };
 
-    public Player(int x, int y, Character character) {
-        super(x, y, character);
+    public Player() {
         Game.getInstance().addKeyListener(kl);
         Game.getInstance().addMouseListener(ml);
     }
 
     @Override
-    public void tick() {
-        velX = 0;
-        velY = 0;
+    public Point2D.Double getVelocities() {
+        double velX = 0;
+        double velY = 0;
 
         if (isUpPressed) {
             velY = SPEED;
@@ -102,16 +101,15 @@ public class Player extends ControllableEntity {
             velY = Math.signum(velY) * dist;
         }
 
+        return new Point2D.Double(velX, velY);
+    }
+
+    public Point2D.Double getBulletVector(double x, double y) {
         if (isShootPressed) {
             isShootPressed = false;
-            Bullet b = new Bullet(x, y);
-            Point p = new Point(clickLocation.x - x, y - clickLocation.y);
-            Point2D.Double normalized = Utils.normalize(p);
-            b.setVelX(normalized.x);
-            b.setVelY(normalized.y);
-            Game.getInstance().getGameHandler().addGameObject(b);
+            Point2D.Double p = new Point2D.Double(clickLocation.x - x, y - clickLocation.y);
+            return Utils.normalize(p);
         }
-
-        super.tick();
+        return null;
     }
 }
