@@ -11,7 +11,12 @@ public class AI extends CharacterController {
     }
 
     @Override
-    public Point2D.Double getBulletVector(double x, double y) {
+    public Point2D.Double getBigAttackVector(double x, double y) {
+        return null;
+    }
+
+    @Override
+    public Point2D.Double getSmallAttackVector(double x, double y) {
         return null;
     }
 }

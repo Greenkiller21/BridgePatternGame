@@ -16,8 +16,8 @@ public class Player extends CharacterController {
     private boolean isDownPressed = false;
     private boolean isLeftPressed = false;
     private boolean isRightPressed = false;
-    private boolean isShootPressed = false;
-    private Point clickLocation = null;
+    private Point leftClickLocation = null;
+    private Point rightClickLocation = null;
 
     private final KeyListener kl = new KeyAdapter() {
         @Override
@@ -57,17 +57,22 @@ public class Player extends CharacterController {
 
         private void handle(MouseEvent e, boolean newValue) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                if (!newValue) {
-                    isShootPressed = false;
-                    clickLocation = null;
-                    return;
-                }
-
-                var sl = Game.getInstance().getLocationOnScreen();
-                var cl = e.getLocationOnScreen();
-                clickLocation = new Point(cl.x - sl.x, cl.y - sl.y);
-                isShootPressed = true;
+                leftClickLocation = getLocation(e, newValue);
             }
+
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                rightClickLocation = getLocation(e, newValue);
+            }
+        }
+
+        private Point getLocation(MouseEvent e, boolean newValue) {
+            if (!newValue) {
+                return null;
+            }
+
+            var sl = Game.getInstance().getLocationOnScreen();
+            var cl = e.getLocationOnScreen();
+            return new Point(cl.x - sl.x, cl.y - sl.y);
         }
     };
 
@@ -104,9 +109,20 @@ public class Player extends CharacterController {
         return new Point2D.Double(velX, velY);
     }
 
-    public Point2D.Double getBulletVector(double x, double y) {
-        if (isShootPressed) {
-            isShootPressed = false;
+    public Point2D.Double getBigAttackVector(double x, double y) {
+        Point2D.Double vector = getAttackVector(x, y, leftClickLocation);
+        leftClickLocation = null;
+        return vector;
+    }
+
+    public Point2D.Double getSmallAttackVector(double x, double y) {
+        Point2D.Double vector = getAttackVector(x, y, rightClickLocation);
+        rightClickLocation = null;
+        return vector;
+    }
+
+    private Point2D.Double getAttackVector(double x, double y, Point clickLocation) {
+        if (clickLocation != null) {
             Point2D.Double p = new Point2D.Double(clickLocation.x - x, y - clickLocation.y);
             return Utils.normalize(p);
         }

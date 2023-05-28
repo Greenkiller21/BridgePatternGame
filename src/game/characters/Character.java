@@ -1,16 +1,13 @@
 package game.characters;
 
 import game.ICollidable;
-import game.IRenderable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.MovableGameObject;
 import game.mechanics.Mechanic;
-import game.projectiles.Bullet;
 import game.projectiles.Projectile;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public abstract class Character extends MovableGameObject {
     protected CharacterController controller;
@@ -44,11 +41,14 @@ public abstract class Character extends MovableGameObject {
         velX = velocities.x;
         velY = velocities.y;
 
-        Point2D.Double bulletVector = controller.getBulletVector(getX(), getY());
-        if (bulletVector != null) {
-            Bullet b = new Bullet(getX(), getY());
-            b.setVelX(bulletVector.x);
-            b.setVelY(bulletVector.y);
+        Point2D.Double bigAttackVector = controller.getBigAttackVector(getX(), getY());
+        if (bigAttackVector != null) {
+            mechanic.createBigAttack(this, bigAttackVector);
+        }
+
+        Point2D.Double smallAttackVector = controller.getSmallAttackVector(getX(), getY());
+        if (smallAttackVector != null) {
+            mechanic.createSmallAttack(this, smallAttackVector);
         }
 
         super.tick();
@@ -62,7 +62,6 @@ public abstract class Character extends MovableGameObject {
                 //p.destroy();
             }
             case Character e -> {
-                System.out.println("COLLIDE STOP");
                 setVelX(0);
                 setVelY(0);
                 revert();
