@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Character extends MovableGameObject implements IDamageable {
+    private final static int COOLDOWN_TICK = 60;
+    private int cooldownStatus = COOLDOWN_TICK;
     protected int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
@@ -44,14 +46,19 @@ public abstract class Character extends MovableGameObject implements IDamageable
         velX = velocities.x;
         velY = velocities.y;
 
-        Point2D.Double bigAttackVector = controller.getBigAttackVector(getX(), getY());
-        if (bigAttackVector != null) {
-            mechanic.createBigAttack(this, bigAttackVector);
-        }
-
-        Point2D.Double smallAttackVector = controller.getSmallAttackVector(getX(), getY());
-        if (smallAttackVector != null) {
-            mechanic.createSmallAttack(this, smallAttackVector);
+        ++cooldownStatus;
+        if (cooldownStatus >= COOLDOWN_TICK) {
+            Point2D.Double bigAttackVector = controller.getBigAttackVector(getX(), getY());
+            if (bigAttackVector != null) {
+                cooldownStatus = 0;
+                mechanic.createBigAttack(this, bigAttackVector);
+            } else {
+                Point2D.Double smallAttackVector = controller.getSmallAttackVector(getX(), getY());
+                if (smallAttackVector != null) {
+                    cooldownStatus = 0;
+                    mechanic.createSmallAttack(this, smallAttackVector);
+                }
+            }
         }
 
         super.tick();
@@ -61,7 +68,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
     public void onCollide(ICollidable other) {
         switch (other) {
             case Projectile p -> {
-                System.out.println("projectile");
+                //System.out.println("projectile");
                 //p.destroy();
             }
             case Character e -> {

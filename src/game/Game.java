@@ -28,7 +28,8 @@ public class Game extends Canvas implements Runnable {
 
         Character playerCharacter = new Elf(100, 10, new IceMagicMechanic());
         playerCharacter.setController(new Player());
-        handler.addGameObject(playerCharacter);
+        handler.addPlayer(playerCharacter);
+
         for (int i = 0; i < 1; ++i) {
             Character aiCharacter = new Orc(30, 10, new GunMechanic());
             aiCharacter.setController(new AI());
@@ -109,8 +110,7 @@ public class Game extends Canvas implements Runnable {
         ////
 
         int startX = 0;
-        int startY = 10;
-        int endX = 15;
+        int startY = 5;
 
         //Render all GameObjects
         handler.render(g, startX, startY);
@@ -119,9 +119,8 @@ public class Game extends Canvas implements Runnable {
         String fps = String.valueOf(currentFps);
         g.setColor(Color.BLACK);
 
-        int wFps = ((int)g.getFont().getStringBounds(fps, g.getFontRenderContext()).getWidth()) + 1;
-
-        g.drawString(fps, window.getCurrentSize().width - endX - wFps, startY);
+        int wFps = Utils.getStringWidth(g, fps);
+        g.drawString(fps, getWidth() - wFps, startY + Utils.getStringHeight(g, fps) / 2);
 
         ////
 

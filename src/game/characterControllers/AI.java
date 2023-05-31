@@ -6,29 +6,47 @@ import game.characters.Character;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class AI extends CharacterController {
+    private final Random rdm = new Random();
+
+    private boolean isBigAttackNext = rdm.nextBoolean();
+
     @Override
     public Point2D.Double getVelocities() {
+        
+
         return new Point2D.Double(0, 0);
     }
 
     @Override
     public Point2D.Double getBigAttackVector(double x, double y) {
-        return getAttackVector(x, y, null);
+        return isBigAttackNext ? getAttackVector(x, y) : null;
     }
 
     @Override
     public Point2D.Double getSmallAttackVector(double x, double y) {
-        return getAttackVector(x, y, null);
+        return !isBigAttackNext ? getAttackVector(x, y) : null;
     }
 
-    private Point2D.Double getAttackVector(double x, double y, Point aimLocation) {
-        if (aimLocation != null) {
-            Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
-            return Utils.normalize(p);
+    private Point2D.Double getAttackVector(double x, double y) {
+        Character player = Game.getInstance().getGameHandler().getPlayer();
+
+        Rectangle2D.Double playerCollider = player.getCollider();
+        Point2D.Double aimLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
+        double distToPlayer = aimLocation.distance(new Point2D.Double(x, y));
+        if (distToPlayer >= 200) {
+            return null;
         }
-        return null;
+
+        Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
+        isBigAttackNext = rdm.nextBoolean();
+        return Utils.normalize(p);
     }
 
     @Override

@@ -1,19 +1,23 @@
 package game;
 
+import game.characters.Character;
 import game.gameObjects.GameObject;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameHandler {
-    private final LinkedList<GameObject> objects = new LinkedList<>();
+    private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
+    private Character player;
     private boolean isGameOver = false;
 
     public void render(Graphics g, int x, int y) {
         if (isGameOver) {
-            g.drawString("GAME OVER", x, y);
+            g.setColor(Color.RED);
+            Font old = g.getFont();
+            g.setFont(old.deriveFont(Font.BOLD, 40));
+            Utils.drawCenteredString(g, "Game over !", Game.getInstance().getWidth() / 2, Game.getInstance().getHeight() / 2, Game.getInstance().getWidth(), Game.getInstance().getHeight());
+            g.setFont(old);
             return;
         }
 
@@ -23,12 +27,14 @@ public class GameHandler {
     }
 
     public void tick() {
-        LinkedList<GameObject> tempObjects = new LinkedList<>(objects);
+        if (isGameOver) {
+            return;
+        }
 
-        for (GameObject obj : tempObjects) {
+        for (GameObject obj : objects) {
             obj.tick();
 
-            for (GameObject other : tempObjects) {
+            for (GameObject other : objects) {
                 if (obj == other) {
                     break;
                 }
@@ -42,6 +48,15 @@ public class GameHandler {
 
     public void addGameObject(GameObject obj) {
         objects.add(obj);
+    }
+
+    public void addPlayer(Character player) {
+        this.player = player;
+        addGameObject(player);
+    }
+
+    public Character getPlayer() {
+        return player;
     }
 
     public void removeGameObject(GameObject obj) {

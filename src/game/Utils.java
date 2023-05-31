@@ -20,4 +20,19 @@ public class Utils {
 
         return new Point2D.Double(point.x / length, point.y / length);
     }
+
+    public static void drawCenteredString(Graphics g, String str, int x, int y, int screenW, int screenH) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawString(str, screenW - x - getStringWidth(g, str) / 2, screenH - y - getStringHeight(g, str) / 2);
+    }
+
+    public static int getStringWidth(Graphics g, String str) {
+        Graphics2D g2d = (Graphics2D) g;
+        return (int)g.getFont().getStringBounds(str, g2d.getFontRenderContext()).getWidth();
+    }
+
+    public static int getStringHeight(Graphics g, String str) {
+        Graphics2D g2d = (Graphics2D) g;
+        return (int)g.getFont().getStringBounds(str, g2d.getFontRenderContext()).getHeight();
+    }
 }
