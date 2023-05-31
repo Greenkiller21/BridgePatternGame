@@ -18,4 +18,9 @@ public class Bullet extends Projectile {
         g.setColor(Color.yellow);
         g.drawRect((int)getX() + x, (int)getY() + y, (int)getCollider().width, (int)getCollider().height);
     }
+
+    @Override
+    public int getDamage() {
+        return 15;
+    }
 }

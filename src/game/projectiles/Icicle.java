@@ -18,4 +18,9 @@ public class Icicle extends Projectile {
         g.setColor(Color.blue);
         g.drawRect((int)getX() + x, (int)getY() + y, (int)getCollider().width, (int)getCollider().height);
     }
+
+    @Override
+    public int getDamage() {
+        return 10;
+    }
 }

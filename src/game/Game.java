@@ -1,7 +1,7 @@
 package game;
 
 import game.characters.Character;
-import game.characters.Dwarf;
+import game.characters.Orc;
 import game.characters.Elf;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
@@ -26,11 +26,11 @@ public class Game extends Canvas implements Runnable {
     private void beginGame() {
         start();
 
-        Character playerCharacter = new Elf(50, 10, new IceMagicMechanic());
+        Character playerCharacter = new Elf(100, 10, new IceMagicMechanic());
         playerCharacter.setController(new Player());
         handler.addGameObject(playerCharacter);
         for (int i = 0; i < 1; ++i) {
-            Character aiCharacter = new Dwarf(30, 10, new GunMechanic());
+            Character aiCharacter = new Orc(30, 10, new GunMechanic());
             aiCharacter.setController(new AI());
             handler.addGameObject(aiCharacter);
         }

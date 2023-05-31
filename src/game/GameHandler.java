@@ -9,8 +9,14 @@ import java.util.LinkedList;
 
 public class GameHandler {
     private final LinkedList<GameObject> objects = new LinkedList<>();
+    private boolean isGameOver = false;
 
     public void render(Graphics g, int x, int y) {
+        if (isGameOver) {
+            g.drawString("GAME OVER", x, y);
+            return;
+        }
+
         for (GameObject obj : objects) {
             obj.render(g, x, y);
         }
@@ -40,5 +46,9 @@ public class GameHandler {
 
     public void removeGameObject(GameObject obj) {
         objects.remove(obj);
+    }
+
+    public void gameOver() {
+        isGameOver = true;
     }
 }

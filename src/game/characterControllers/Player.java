@@ -10,8 +10,6 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 
 public class Player extends CharacterController {
-    private static final double SPEED = 2.0;
-
     private boolean isUpPressed = false;
     private boolean isDownPressed = false;
     private boolean isLeftPressed = false;
@@ -127,5 +125,25 @@ public class Player extends CharacterController {
             return Utils.normalize(p);
         }
         return null;
+    }
+
+    @Override
+    public void die(Character c) {
+        Game.getInstance().getGameHandler().gameOver();
+    }
+
+    @Override
+    public void drawHealthBar(Graphics g, Character c) {
+        int hbWidth = 200;
+        int hbHeight = 20;
+        int hbX = 5;
+        int hbY = 5;
+
+        int margin = 2;
+
+        int height = Game.getInstance().getHeight();
+        int hbRealY = height - hbY - hbHeight;
+
+        drawHealthBarReal(g, hbWidth, hbHeight, hbX, hbRealY, margin, c.getHealth() / 100.);
     }
 }

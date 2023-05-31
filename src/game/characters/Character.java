@@ -1,6 +1,7 @@
 package game.characters;
 
 import game.ICollidable;
+import game.IDamageable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.MovableGameObject;
 import game.mechanics.Mechanic;
@@ -9,7 +10,8 @@ import game.projectiles.Projectile;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Character extends MovableGameObject {
+public abstract class Character extends MovableGameObject implements IDamageable {
+    protected int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
 
@@ -25,6 +27,7 @@ public abstract class Character extends MovableGameObject {
     @Override
     public void render(Graphics g, int x, int y) {
         mechanic.render(g, (int)getX() + x, (int)getY() + y);
+        controller.drawHealthBar(g, this);
     }
 
     public Mechanic getMechanic() {
@@ -62,11 +65,23 @@ public abstract class Character extends MovableGameObject {
                 //p.destroy();
             }
             case Character e -> {
-                setVelX(0);
-                setVelY(0);
                 revert();
             }
             default -> throw new IllegalStateException("Unexpected value: " + other);
         }
+    }
+
+    @Override
+    public void damageWith(Projectile p) {
+        health -= p.getDamage();
+
+        if (health <= 0) {
+            controller.die(this);
+        }
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
     }
 }
