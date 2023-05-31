@@ -80,7 +80,7 @@ public class Player extends CharacterController {
     }
 
     @Override
-    public Point2D.Double getVelocities() {
+    public Point2D.Double getVelocities(double x, double y) {
         double velX = 0;
         double velY = 0;
 

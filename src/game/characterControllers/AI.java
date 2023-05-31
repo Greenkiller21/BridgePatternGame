@@ -18,10 +18,18 @@ public class AI extends CharacterController {
     private boolean isBigAttackNext = rdm.nextBoolean();
 
     @Override
-    public Point2D.Double getVelocities() {
-        
+    public Point2D.Double getVelocities(double x, double y) {
+        Character player = Game.getInstance().getGameHandler().getPlayer();
+        Rectangle2D.Double playerCollider = player.getCollider();
+        Point2D.Double moveLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
 
-        return new Point2D.Double(0, 0);
+        double distToPlayer = moveLocation.distance(new Point2D.Double(x, y));
+        if (distToPlayer >= 200 || distToPlayer <= 120) {
+            return new Point2D.Double(0, 0);
+        }
+
+        Point2D.Double p = new Point2D.Double(moveLocation.x - x, y - moveLocation.y);
+        return Utils.normalize(p);
     }
 
     @Override
