@@ -3,11 +3,14 @@ package game.gameObjects;
 public abstract class MovableGameObject extends GameObject {
     protected double velX, velY;
     private double dx, dy;
+    private double lastdx, lastdy;
 
-    public MovableGameObject(int x, int y) {
+    public MovableGameObject(double x, double y) {
         super(x, y);
-        dx = x;
-        dy = y;
+        lastdx = dx = x;
+        lastdy = dy = y;
+
+        convertCurrent();
     }
 
     public double getVelX() {
@@ -28,10 +31,24 @@ public abstract class MovableGameObject extends GameObject {
 
     @Override
     public void tick() {
+        lastdx = dx;
+        lastdy = dy;
+
         dx += velX;
         dy -= velY;
 
-        x = (int)Math.round(dx);
-        y = (int)Math.round(dy);
+        convertCurrent();
+    }
+
+    public void revert() {
+        dx = lastdx;
+        dy = lastdy;
+
+        convertCurrent();
+    }
+
+    private void convertCurrent() {
+        setX(dx);
+        setY(dy);
     }
 }

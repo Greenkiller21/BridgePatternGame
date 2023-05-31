@@ -1,24 +1,36 @@
 package game.projectiles;
 
+import game.GameHandler;
+import game.ICollidable;
+import game.Utils;
+import game.characters.Character;
+import game.gameObjects.GameObject;
 import game.gameObjects.MovableGameObject;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Projectile extends MovableGameObject {
-    private int lastX, lastY;
+    private GameObject creator;
 
-    public Projectile(int x, int y) {
+    public Projectile(double x, double y, GameObject creator) {
         super(x, y);
+        this.creator = creator;
     }
 
     @Override
-    public void render(Graphics g, int x, int y) {
-        lastX = x;
-        lastY = y;
-    }
-
-    @Override
-    public Rectangle getCollider() {
-        return new Rectangle(lastX, lastY, 0, 0);
+    public void onCollide(ICollidable other) {
+        switch (other) {
+            case Character c -> {
+                if (c != creator) {
+                    destroy();
+                }
+            }
+            case Projectile p -> {
+                destroy();
+            }
+            default -> { }
+        }
     }
 }

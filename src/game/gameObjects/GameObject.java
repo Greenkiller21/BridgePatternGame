@@ -5,31 +5,39 @@ import game.ICollidable;
 import game.IRenderable;
 import game.ITickable;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+
 public abstract class GameObject implements IRenderable, ITickable, ICollidable {
-    protected int x, y;
+    protected Rectangle2D.Double bounds = new Rectangle2D.Double();
 
-    public GameObject(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public GameObject(double x, double y) {
+        bounds.x = x;
+        bounds.y = y;
     }
 
-    public int getX() {
-        return x;
+    public double getX() {
+        return bounds.x;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setX(double x) {
+        bounds.x = x;
     }
 
-    public int getY() {
-        return y;
+    public double getY() {
+        return bounds.y;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(double y) {
+        bounds.y = y;
     }
 
     public void destroy() {
         Game.getInstance().getGameHandler().removeGameObject(this);
+    }
+
+    @Override
+    public Rectangle2D.Double getCollider() {
+        return bounds;
     }
 }

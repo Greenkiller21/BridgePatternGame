@@ -1,4 +1,4 @@
-package game.playerTypes;
+package game.characterControllers;
 
 import game.Game;
 import game.Utils;
@@ -9,15 +9,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
-public class Player extends ControllableEntity {
+public class Player extends CharacterController {
     private static final double SPEED = 2.0;
 
     private boolean isUpPressed = false;
     private boolean isDownPressed = false;
     private boolean isLeftPressed = false;
     private boolean isRightPressed = false;
-    private boolean isShootPressed = false;
-    private Point clickLocation = null;
+    private Point leftClickLocation = null;
+    private Point rightClickLocation = null;
 
     private final KeyListener kl = new KeyAdapter() {
         @Override
@@ -57,30 +57,34 @@ public class Player extends ControllableEntity {
 
         private void handle(MouseEvent e, boolean newValue) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                if (!newValue) {
-                    isShootPressed = false;
-                    clickLocation = null;
-                    return;
-                }
-
-                var sl = Game.getInstance().getLocationOnScreen();
-                var cl = e.getLocationOnScreen();
-                clickLocation = new Point(cl.x - sl.x, cl.y - sl.y);
-                isShootPressed = true;
+                leftClickLocation = getLocation(e, newValue);
             }
+
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                rightClickLocation = getLocation(e, newValue);
+            }
+        }
+
+        private Point getLocation(MouseEvent e, boolean newValue) {
+            if (!newValue) {
+                return null;
+            }
+
+            var sl = Game.getInstance().getLocationOnScreen();
+            var cl = e.getLocationOnScreen();
+            return new Point(cl.x - sl.x, cl.y - sl.y);
         }
     };
 
-    public Player(int x, int y, Character character) {
-        super(x, y, character);
+    public Player() {
         Game.getInstance().addKeyListener(kl);
         Game.getInstance().addMouseListener(ml);
     }
 
     @Override
-    public void tick() {
-        velX = 0;
-        velY = 0;
+    public Point2D.Double getVelocities() {
+        double velX = 0;
+        double velY = 0;
 
         if (isUpPressed) {
             velY = SPEED;
@@ -102,16 +106,26 @@ public class Player extends ControllableEntity {
             velY = Math.signum(velY) * dist;
         }
 
-        if (isShootPressed) {
-            isShootPressed = false;
-            Bullet b = new Bullet(x, y);
-            Point p = new Point(clickLocation.x - x, y - clickLocation.y);
-            Point2D.Double normalized = Utils.normalize(p);
-            b.setVelX(normalized.x);
-            b.setVelY(normalized.y);
-            Game.getInstance().getGameHandler().addGameObject(b);
-        }
+        return new Point2D.Double(velX, velY);
+    }
 
-        super.tick();
+    public Point2D.Double getBigAttackVector(double x, double y) {
+        Point2D.Double vector = getAttackVector(x, y, leftClickLocation);
+        leftClickLocation = null;
+        return vector;
+    }
+
+    public Point2D.Double getSmallAttackVector(double x, double y) {
+        Point2D.Double vector = getAttackVector(x, y, rightClickLocation);
+        rightClickLocation = null;
+        return vector;
+    }
+
+    private Point2D.Double getAttackVector(double x, double y, Point clickLocation) {
+        if (clickLocation != null) {
+            Point2D.Double p = new Point2D.Double(clickLocation.x - x, y - clickLocation.y);
+            return Utils.normalize(p);
+        }
+        return null;
     }
 }

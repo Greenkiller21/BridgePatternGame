@@ -1,36 +1,72 @@
 package game.characters;
 
 import game.ICollidable;
-import game.IRenderable;
+import game.characterControllers.CharacterController;
+import game.gameObjects.MovableGameObject;
 import game.mechanics.Mechanic;
+import game.projectiles.Projectile;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
-public abstract class Character implements IRenderable, ICollidable {
+public abstract class Character extends MovableGameObject {
+    protected CharacterController controller;
     protected Mechanic mechanic;
-    private int lastX, lastY;
 
-    public Character(Mechanic mechanic) {
+    public Character(double x, double y, Mechanic mechanic) {
+        super(x, y);
         this.mechanic = mechanic;
+    }
+
+    public void setController(CharacterController controller) {
+        this.controller = controller;
     }
 
     @Override
     public void render(Graphics g, int x, int y) {
-        lastX = x;
-        lastY = y;
-        mechanic.render(g, x, y);
+        mechanic.render(g, (int)getX() + x, (int)getY() + y);
     }
 
-    public Mechanic getWeapon() {
+    public Mechanic getMechanic() {
         return mechanic;
     }
 
-    public void setWeapon(Mechanic mechanic) {
+    public void setMechanic(Mechanic mechanic) {
         this.mechanic = mechanic;
     }
 
     @Override
-    public Rectangle getCollider() {
-        return new Rectangle(lastX, lastY, 0, 0);
+    public void tick() {
+        Point2D.Double velocities = controller.getVelocities();
+        velX = velocities.x;
+        velY = velocities.y;
+
+        Point2D.Double bigAttackVector = controller.getBigAttackVector(getX(), getY());
+        if (bigAttackVector != null) {
+            mechanic.createBigAttack(this, bigAttackVector);
+        }
+
+        Point2D.Double smallAttackVector = controller.getSmallAttackVector(getX(), getY());
+        if (smallAttackVector != null) {
+            mechanic.createSmallAttack(this, smallAttackVector);
+        }
+
+        super.tick();
+    }
+
+    @Override
+    public void onCollide(ICollidable other) {
+        switch (other) {
+            case Projectile p -> {
+                System.out.println("projectile");
+                //p.destroy();
+            }
+            case Character e -> {
+                setVelX(0);
+                setVelY(0);
+                revert();
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + other);
+        }
     }
 }

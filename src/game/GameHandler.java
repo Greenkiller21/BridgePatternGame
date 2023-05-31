@@ -3,6 +3,8 @@ package game;
 import game.gameObjects.GameObject;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class GameHandler {
@@ -15,19 +17,18 @@ public class GameHandler {
     }
 
     public void tick() {
-        LinkedList<GameObject> tempObjects = (LinkedList<GameObject>) objects.clone();
+        LinkedList<GameObject> tempObjects = new LinkedList<>(objects);
 
         for (GameObject obj : tempObjects) {
             obj.tick();
-        }
 
-        for (GameObject src : tempObjects) {
-            for (GameObject dest : tempObjects) {
-                if (src == dest) {
-                    continue;
+            for (GameObject other : tempObjects) {
+                if (obj == other) {
+                    break;
                 }
-                if (src.getCollider().intersects(dest.getCollider())) {
-                    src.onCollide(dest);
+                if (obj.getCollider().intersects(other.getCollider())) {
+                    obj.onCollide(other);
+                    other.onCollide(obj);
                 }
             }
         }

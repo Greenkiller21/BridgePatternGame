@@ -15,7 +15,7 @@ public class Utils {
         return finalArr;
     }
 
-    public static Point2D.Double normalize(Point point) {
+    public static Point2D.Double normalize(Point2D.Double point) {
         double length = Math.sqrt(point.x * point.x + point.y * point.y);
 
         return new Point2D.Double(point.x / length, point.y / length);
