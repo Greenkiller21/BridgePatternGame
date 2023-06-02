@@ -44,6 +44,11 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
     @Override
     public void tick() {
+        Mechanic newMechanic = controller.getMechanic();
+        if (newMechanic != null) {
+            setMechanic(newMechanic);
+        }
+
         Point2D.Double velocities = controller.getVelocities(getX(), getY());
         velX = velocities.x;
         velY = velocities.y;

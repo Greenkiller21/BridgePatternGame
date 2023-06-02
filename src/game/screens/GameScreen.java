@@ -6,6 +6,7 @@ import game.Utils;
 import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
+import game.mechanics.Mechanic;
 
 import java.awt.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -23,6 +24,27 @@ public class GameScreen extends Screen {
     public void render(Graphics g, int x, int y) {
         for (GameObject obj : objects) {
             obj.render(g, x, y);
+        }
+
+        Mechanic[] mechanics = Game.getInstance().getGameHandler().getMechanics();
+
+        int mecWidth = 40;
+        int mecHeight = 40;
+
+        int mecSpacing = 5;
+
+        int startY = Game.getInstance().getHeight() - mecHeight - 2 * mecSpacing;
+        int startX = Game.getInstance().getWidth() - mechanics.length * (mecWidth + mecSpacing);
+
+        for (int i = 0; i < mechanics.length; ++i) {
+            int cX = x + startX + i * (mecWidth + mecSpacing);
+            int cY = y + startY;
+
+            g.setColor(Color.GRAY);
+            g.fillRect(cX, cY, mecWidth, mecHeight);
+            g.setColor(Color.BLACK);
+            String str = String.valueOf((i + 1) % 10);
+            g.drawString(str, cX + 1, cY + 1 + Utils.getStringHeight(g, str));
         }
     }
 

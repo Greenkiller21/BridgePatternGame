@@ -3,6 +3,7 @@ package game.characterControllers;
 import game.Game;
 import game.Utils;
 import game.characters.Character;
+import game.mechanics.Mechanic;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -69,5 +70,10 @@ public class AI extends CharacterController {
         int xCharacterCenter = (int)(c.getCollider().width / 2);
 
         drawHealthBarReal(g, hbWidth, hbHeight, hbX + xCharacterCenter - (hbWidth / 2), hbY, margin, c.getHealth() / 100.);
+    }
+
+    @Override
+    public Mechanic getMechanic() {
+        return null;
     }
 }

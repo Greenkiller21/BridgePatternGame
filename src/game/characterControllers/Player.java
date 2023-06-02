@@ -3,6 +3,9 @@ package game.characterControllers;
 import game.Game;
 import game.Utils;
 import game.characters.Character;
+import game.mechanics.Mechanic;
+import game.mechanics.magicMechanics.IceMagicMechanic;
+import game.mechanics.physicalMechanics.GunMechanic;
 import game.projectiles.Bullet;
 
 import java.awt.*;
@@ -16,6 +19,7 @@ public class Player extends CharacterController {
     private boolean isRightPressed = false;
     private Point leftClickLocation = null;
     private Point rightClickLocation = null;
+    private final boolean[] numbersPressed = new boolean[10];
 
     private final KeyListener kl = new KeyAdapter() {
         @Override
@@ -31,11 +35,16 @@ public class Player extends CharacterController {
         }
 
         private void handle(KeyEvent e, boolean newValue) {
-            switch (e.getKeyCode()) {
+            int kc = e.getKeyCode();
+            switch (kc) {
                 case KeyEvent.VK_W -> isUpPressed = newValue;
                 case KeyEvent.VK_S -> isDownPressed = newValue;
                 case KeyEvent.VK_A -> isLeftPressed = newValue;
                 case KeyEvent.VK_D -> isRightPressed = newValue;
+            }
+
+            if (kc >= KeyEvent.VK_0 && kc <= KeyEvent.VK_9) {
+                numbersPressed[kc - KeyEvent.VK_0] = newValue;
             }
         }
     };
@@ -105,6 +114,23 @@ public class Player extends CharacterController {
         }
 
         return new Point2D.Double(velX, velY);
+    }
+
+    public Mechanic getMechanic() {
+        for (int i = 0; i < 10; ++i) {
+            if (numbersPressed[i]) {
+                Mechanic m = switch (i) {
+                    case 1 -> new IceMagicMechanic();
+                    case 2 -> new GunMechanic();
+                    default -> null;
+                };
+                if (m != null) {
+                    return m;
+                }
+            }
+        }
+
+        return null;
     }
 
     public Point2D.Double getBigAttackVector(double x, double y) {

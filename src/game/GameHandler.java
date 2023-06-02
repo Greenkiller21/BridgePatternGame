@@ -2,16 +2,21 @@ package game;
 
 import game.characters.Character;
 import game.gameObjects.GameObject;
+import game.mechanics.Mechanic;
+import game.mechanics.magicMechanics.IceMagicMechanic;
+import game.mechanics.physicalMechanics.GunMechanic;
 import game.screens.GameScreen;
 import game.screens.Screen;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
     private Screen currentScreen;
+    private final Mechanic[] mechanics = { new IceMagicMechanic(), new GunMechanic() };
 
     public void render(Graphics g, int x, int y) {
         currentScreen.render(g, x, y);
@@ -44,5 +49,9 @@ public class GameHandler {
 
     public void removeGameObject(GameObject obj) {
         objects.remove(obj);
+    }
+
+    public Mechanic[] getMechanics() {
+        return mechanics;
     }
 }
