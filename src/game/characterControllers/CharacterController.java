@@ -11,7 +11,6 @@ public abstract class CharacterController {
     public abstract Point2D.Double getVelocities(double x, double y);
     public abstract Point2D.Double getBigAttackVector(double x, double y);
     public abstract Point2D.Double getSmallAttackVector(double x, double y);
-    public abstract void die(Character c);
     public abstract void drawHealthBar(Graphics g, Character c);
 
     protected void drawHealthBarReal(Graphics g, int hbWidth, int hbHeight, int hbX, int hbY, int margin, double currentHealthPercentage) {

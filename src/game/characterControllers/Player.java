@@ -128,11 +128,6 @@ public class Player extends CharacterController {
     }
 
     @Override
-    public void die(Character c) {
-        Game.getInstance().getGameHandler().gameOver();
-    }
-
-    @Override
     public void drawHealthBar(Graphics g, Character c) {
         int hbWidth = 200;
         int hbHeight = 20;

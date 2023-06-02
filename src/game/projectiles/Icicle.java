@@ -23,4 +23,9 @@ public class Icicle extends Projectile {
     public int getDamage() {
         return 10;
     }
+
+    @Override
+    public int maxDistance() {
+        return 100;
+    }
 }

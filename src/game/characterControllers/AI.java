@@ -58,11 +58,6 @@ public class AI extends CharacterController {
     }
 
     @Override
-    public void die(Character c) {
-        c.destroy();
-    }
-
-    @Override
     public void drawHealthBar(Graphics g, Character c) {
         int hbWidth = 50;
         int hbHeight = 6;

@@ -7,6 +7,7 @@ import game.characterControllers.AI;
 import game.characterControllers.Player;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.GunMechanic;
+import game.screens.GameScreen;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -24,8 +25,6 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void beginGame() {
-        start();
-
         Character playerCharacter = new Elf(100, 10, new IceMagicMechanic());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
@@ -35,6 +34,10 @@ public class Game extends Canvas implements Runnable {
             aiCharacter.setController(new AI());
             handler.addGameObject(aiCharacter);
         }
+
+        handler.setCurrentScreen(handler.getNewGameScreen());
+
+        start();
     }
 
     private void start() {

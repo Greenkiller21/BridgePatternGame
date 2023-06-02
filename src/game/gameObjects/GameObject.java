@@ -40,4 +40,6 @@ public abstract class GameObject implements IRenderable, ITickable, ICollidable 
     public Rectangle2D.Double getCollider() {
         return bounds;
     }
+
+    public abstract GameObjectType getType();
 }

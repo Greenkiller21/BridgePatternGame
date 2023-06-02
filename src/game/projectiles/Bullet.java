@@ -23,4 +23,9 @@ public class Bullet extends Projectile {
     public int getDamage() {
         return 15;
     }
+
+    @Override
+    public int maxDistance() {
+        return 200;
+    }
 }

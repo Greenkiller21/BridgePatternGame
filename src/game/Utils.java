@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
 import java.util.stream.Stream;
@@ -23,16 +25,25 @@ public class Utils {
 
     public static void drawCenteredString(Graphics g, String str, int x, int y, int screenW, int screenH) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawString(str, screenW - x - getStringWidth(g, str) / 2, screenH - y - getStringHeight(g, str) / 2);
+        g2d.drawString(str, screenW - x - getStringWidth(g, str) / 2, screenH - y + getStringHeight(g, str) / 2);
     }
 
     public static int getStringWidth(Graphics g, String str) {
         Graphics2D g2d = (Graphics2D) g;
-        return (int)g.getFont().getStringBounds(str, g2d.getFontRenderContext()).getWidth();
+        return (int)getStringBounds(g2d, str).getWidth();
     }
 
     public static int getStringHeight(Graphics g, String str) {
         Graphics2D g2d = (Graphics2D) g;
-        return (int)g.getFont().getStringBounds(str, g2d.getFontRenderContext()).getHeight();
+        return (int)getStringBounds(g2d, str).getHeight();
+    }
+
+    /**
+     * https://stackoverflow.com/a/12495108
+     */
+    private static Rectangle getStringBounds(Graphics2D g2, String str) {
+        FontRenderContext frc = g2.getFontRenderContext();
+        GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
+        return gv.getPixelBounds(null, 0, 0);
     }
 }

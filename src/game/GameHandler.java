@@ -2,6 +2,8 @@ package game;
 
 import game.characters.Character;
 import game.gameObjects.GameObject;
+import game.screens.GameScreen;
+import game.screens.Screen;
 
 import java.awt.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -9,41 +11,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
-    private boolean isGameOver = false;
+    private Screen currentScreen;
 
     public void render(Graphics g, int x, int y) {
-        if (isGameOver) {
-            g.setColor(Color.RED);
-            Font old = g.getFont();
-            g.setFont(old.deriveFont(Font.BOLD, 40));
-            Utils.drawCenteredString(g, "Game over !", Game.getInstance().getWidth() / 2, Game.getInstance().getHeight() / 2, Game.getInstance().getWidth(), Game.getInstance().getHeight());
-            g.setFont(old);
-            return;
-        }
-
-        for (GameObject obj : objects) {
-            obj.render(g, x, y);
-        }
+        currentScreen.render(g, x, y);
     }
 
     public void tick() {
-        if (isGameOver) {
-            return;
-        }
+        currentScreen.tick();
+    }
 
-        for (GameObject obj : objects) {
-            obj.tick();
+    public GameScreen getNewGameScreen() {
+        return new GameScreen(objects, player);
+    }
 
-            for (GameObject other : objects) {
-                if (obj == other) {
-                    break;
-                }
-                if (obj.getCollider().intersects(other.getCollider())) {
-                    obj.onCollide(other);
-                    other.onCollide(obj);
-                }
-            }
-        }
+    public void setCurrentScreen(Screen screen) {
+        currentScreen = screen;
     }
 
     public void addGameObject(GameObject obj) {
@@ -61,9 +44,5 @@ public class GameHandler {
 
     public void removeGameObject(GameObject obj) {
         objects.remove(obj);
-    }
-
-    public void gameOver() {
-        isGameOver = true;
     }
 }

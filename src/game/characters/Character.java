@@ -3,6 +3,8 @@ package game.characters;
 import game.ICollidable;
 import game.IDamageable;
 import game.characterControllers.CharacterController;
+import game.gameObjects.GameObject;
+import game.gameObjects.GameObjectType;
 import game.gameObjects.MovableGameObject;
 import game.mechanics.Mechanic;
 import game.projectiles.Projectile;
@@ -65,16 +67,11 @@ public abstract class Character extends MovableGameObject implements IDamageable
     }
 
     @Override
-    public void onCollide(ICollidable other) {
-        switch (other) {
-            case Projectile p -> {
-                //System.out.println("projectile");
-                //p.destroy();
-            }
-            case Character e -> {
+    public void onCollide(GameObject other) {
+        switch (other.getType()) {
+            case Character -> {
                 revert();
             }
-            default -> throw new IllegalStateException("Unexpected value: " + other);
         }
     }
 
@@ -83,12 +80,17 @@ public abstract class Character extends MovableGameObject implements IDamageable
         health -= p.getDamage();
 
         if (health <= 0) {
-            controller.die(this);
+            destroy();
         }
     }
 
     @Override
     public int getHealth() {
         return health;
+    }
+
+    @Override
+    public GameObjectType getType() {
+        return GameObjectType.Character;
     }
 }
