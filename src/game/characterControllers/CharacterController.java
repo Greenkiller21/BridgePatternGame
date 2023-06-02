@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class CharacterController {
-    protected static final double SPEED = 2.0;
-
     public abstract Point2D.Double getVelocities(double x, double y);
     public abstract Point2D.Double getBigAttackVector(double x, double y);
     public abstract Point2D.Double getSmallAttackVector(double x, double y);

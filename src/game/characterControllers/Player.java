@@ -94,21 +94,21 @@ public class Player extends CharacterController {
         double velY = 0;
 
         if (isUpPressed) {
-            velY = SPEED;
+            velY = 1;
         }
         if (isDownPressed) {
-            velY = -SPEED;
+            velY = -1;
         }
         if (isRightPressed) {
-            velX = SPEED;
+            velX = 1;
         }
         if (isLeftPressed) {
-            velX = -SPEED;
+            velX = -1;
         }
 
         if (velX != 0 && Math.abs(velX) == Math.abs(velY)) {
             //sin of 45 -> 1 / sqrt(2) is there to unify the distance travelled in a tick
-            double dist = SPEED * Math.sin(45);
+            double dist = Math.sin(45);
             velX = Math.signum(velX) * dist;
             velY = Math.signum(velY) * dist;
         }

@@ -18,10 +18,12 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
+    private Image toRender;
 
     public Character(double x, double y, Mechanic mechanic) {
         super(x, y);
         this.mechanic = mechanic;
+        toRender = getImages()[2];
     }
 
     public void setController(CharacterController controller) {
@@ -30,6 +32,49 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
     @Override
     public void render(Graphics g, int x, int y) {
+        if (getVelX() != 0 || getVelY() != 0) {
+            if (getVelY() == getSpeed()) {
+                toRender = getImages()[0]; //W
+            } else if (getVelX() == -getSpeed()) {
+                toRender = getImages()[1]; //A
+            } else if (getVelY() == -getSpeed()) {
+                toRender = getImages()[2]; //S
+            } else if (getVelX() == getSpeed()) {
+                toRender = getImages()[3]; //D
+            } else {
+                if (getVelY() > 0 && getVelX() > 0) { //WD
+                    if (getVelY() > getVelX()) {
+                        toRender = getImages()[0]; //W
+                    } else {
+                        toRender = getImages()[3]; //D
+                    }
+                } else if (getVelY() < 0 && getVelX() < 0) { //SA
+                    if (getVelY() > getVelX()) {
+                        toRender = getImages()[2]; //S
+                    } else {
+                        toRender = getImages()[1]; //A
+                    }
+                } else if (getVelY() > 0 && getVelX() < 0) { //WA
+                    if (getVelY() > -getVelX()) {
+                        toRender = getImages()[0]; //W
+                    } else {
+                        toRender = getImages()[1]; //A
+                    }
+                } else if (getVelY() < 0 && getVelX() > 0) { //SD
+                    if (-getVelY() > getVelX()) {
+                        toRender = getImages()[2]; //S
+                    } else {
+                        toRender = getImages()[3]; //D
+                    }
+                }
+            }
+        }
+
+        g.drawImage(toRender, (int)getX() + x, (int)getY() + y, null);
+
+        bounds.width = toRender.getWidth(null);
+        bounds.height = toRender.getHeight(null);
+
         mechanic.render(g, (int)getX() + x, (int)getY() + y);
         controller.drawHealthBar(g, this);
     }
@@ -50,8 +95,8 @@ public abstract class Character extends MovableGameObject implements IDamageable
         }
 
         Point2D.Double velocities = controller.getVelocities(getX(), getY());
-        velX = velocities.x;
-        velY = velocities.y;
+        velX = getSpeed() * velocities.x;
+        velY = getSpeed() * velocities.y;
 
         ++cooldownStatus;
         if (cooldownStatus >= COOLDOWN_TICK) {
@@ -98,4 +143,12 @@ public abstract class Character extends MovableGameObject implements IDamageable
     public GameObjectType getType() {
         return GameObjectType.Character;
     }
+
+    /**
+     * Images of the character (W, A, S, D)
+     * @return
+     */
+    protected abstract Image[] getImages();
+
+    protected abstract double getSpeed();
 }
