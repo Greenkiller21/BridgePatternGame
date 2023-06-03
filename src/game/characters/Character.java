@@ -49,7 +49,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
                         toRender = getImages()[3]; //D
                     }
                 } else if (getVelY() < 0 && getVelX() < 0) { //SA
-                    if (getVelY() > getVelX()) {
+                    if (-getVelY() > -getVelX()) {
                         toRender = getImages()[2]; //S
                     } else {
                         toRender = getImages()[1]; //A
