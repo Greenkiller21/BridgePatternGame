@@ -1,6 +1,6 @@
 package game.characterControllers;
 
-import game.Game;
+import game.screens.Game;
 import game.Utils;
 import game.characters.Character;
 import game.mechanics.Mechanic;
@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class AI extends CharacterController {
     private final Random rdm = new Random();

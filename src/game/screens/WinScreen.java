@@ -1,22 +1,16 @@
 package game.screens;
 
-import game.Game;
-import game.Utils;
-
+import javax.swing.*;
 import java.awt.*;
 
-public class WinScreen extends Screen {
-    @Override
-    public void render(Graphics g, int x, int y) {
-        g.setColor(Color.GREEN);
-        Font old = g.getFont();
-        g.setFont(old.deriveFont(Font.BOLD, 40));
-        Utils.drawCenteredString(g, "You won !", Game.getInstance().getWidth() / 2, Game.getInstance().getHeight() / 2, Game.getInstance().getWidth(), Game.getInstance().getHeight());
-        g.setFont(old);
-    }
+public class WinScreen extends JPanel {
+    public WinScreen() {
+        setLayout(new GridBagLayout());
 
-    @Override
-    public void tick() {
-
+        JLabel text = new JLabel();
+        text.setText("You won !");
+        text.setFont(new Font("Serif", Font.BOLD, 40));
+        text.setForeground(Color.GREEN);
+        add(text);
     }
 }

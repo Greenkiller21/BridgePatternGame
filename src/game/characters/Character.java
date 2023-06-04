@@ -1,6 +1,5 @@
 package game.characters;
 
-import game.ICollidable;
 import game.IDamageable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.GameObject;
@@ -18,12 +17,12 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
-    private Image toRender;
+    private int renderDirection;
 
     public Character(double x, double y, Mechanic mechanic) {
         super(x, y);
         this.mechanic = mechanic;
-        toRender = getImages()[2];
+        renderDirection = 2;
     }
 
     public void setController(CharacterController controller) {
@@ -34,48 +33,62 @@ public abstract class Character extends MovableGameObject implements IDamageable
     public void render(Graphics g, int x, int y) {
         if (getVelX() != 0 || getVelY() != 0) {
             if (getVelY() == getSpeed()) {
-                toRender = getImages()[0]; //W
+                renderDirection = 0; //W
             } else if (getVelX() == -getSpeed()) {
-                toRender = getImages()[1]; //A
+                renderDirection = 1; //A
             } else if (getVelY() == -getSpeed()) {
-                toRender = getImages()[2]; //S
+                renderDirection = 2; //S
             } else if (getVelX() == getSpeed()) {
-                toRender = getImages()[3]; //D
+                renderDirection = 3; //D
             } else {
                 if (getVelY() > 0 && getVelX() > 0) { //WD
                     if (getVelY() > getVelX()) {
-                        toRender = getImages()[0]; //W
+                        renderDirection = 0; //W
                     } else {
-                        toRender = getImages()[3]; //D
+                        renderDirection = 3; //D
                     }
                 } else if (getVelY() < 0 && getVelX() < 0) { //SA
                     if (-getVelY() > -getVelX()) {
-                        toRender = getImages()[2]; //S
+                        renderDirection = 2; //S
                     } else {
-                        toRender = getImages()[1]; //A
+                        renderDirection = 1; //A
                     }
                 } else if (getVelY() > 0 && getVelX() < 0) { //WA
                     if (getVelY() > -getVelX()) {
-                        toRender = getImages()[0]; //W
+                        renderDirection = 0; //W
                     } else {
-                        toRender = getImages()[1]; //A
+                        renderDirection = 1; //A
                     }
                 } else if (getVelY() < 0 && getVelX() > 0) { //SD
                     if (-getVelY() > getVelX()) {
-                        toRender = getImages()[2]; //S
+                        renderDirection = 2; //S
                     } else {
-                        toRender = getImages()[3]; //D
+                        renderDirection = 3; //D
                     }
                 }
             }
         }
 
-        g.drawImage(toRender, (int)getX() + x, (int)getY() + y, null);
+        Image characterImg = getImages()[renderDirection];
+        Image mechanicImg = mechanic.getImage(renderDirection);
 
-        bounds.width = toRender.getWidth(null);
-        bounds.height = toRender.getHeight(null);
+        if (renderDirection == 0) { //W
+            //Mechanic
+            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
+        }
 
-        mechanic.render(g, (int)getX() + x, (int)getY() + y);
+        //Character
+        g.drawImage(characterImg, (int)getX() + x, (int)getY() + y, null);
+
+        bounds.width = characterImg.getWidth(null);
+        bounds.height = characterImg.getHeight(null);
+
+        if (renderDirection != 0) { //ASD
+            //Mechanic
+            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
+        }
+
+        //Healthbar
         controller.drawHealthBar(g, this);
     }
 

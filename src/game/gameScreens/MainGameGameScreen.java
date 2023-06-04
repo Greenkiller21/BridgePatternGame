@@ -1,21 +1,22 @@
-package game.screens;
+package game.gameScreens;
 
-import game.Game;
-import game.GameHandler;
+import game.screens.Game;
+import game.MasterWindow;
 import game.Utils;
 import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
 import game.mechanics.Mechanic;
+import game.screens.GameOverScreen;
 
 import java.awt.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class GameScreen extends Screen {
+public class MainGameGameScreen extends GameScreen {
     private final ConcurrentLinkedQueue<GameObject> objects;
     private final Character player;
 
-    public GameScreen(ConcurrentLinkedQueue<GameObject> objects, Character player) {
+    public MainGameGameScreen(ConcurrentLinkedQueue<GameObject> objects, Character player) {
         this.objects = objects;
         this.player = player;
     }
@@ -45,6 +46,8 @@ public class GameScreen extends Screen {
             g.setColor(Color.BLACK);
             String str = String.valueOf((i + 1) % 10);
             g.drawString(str, cX + 1, cY + 1 + Utils.getStringHeight(g, str));
+
+            g.drawImage(mechanics[i].getImage(), cX, cY, mecWidth, mecHeight, null);
         }
     }
 
@@ -65,9 +68,9 @@ public class GameScreen extends Screen {
         }
 
         if (!objects.contains(player)) {
-            Game.getInstance().getGameHandler().setCurrentScreen(new GameOverScreen());
+            Game.getInstance().gameOver();
         } else if (objects.stream().filter(go -> go.getType() == GameObjectType.Character).toList().size() == 1) {
-            Game.getInstance().getGameHandler().setCurrentScreen(new WinScreen());
+            Game.getInstance().win();
         }
     }
 }

@@ -4,34 +4,33 @@ import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.GunMechanic;
-import game.screens.GameScreen;
-import game.screens.Screen;
+import game.mechanics.physicalMechanics.SlingshotMechanic;
+import game.gameScreens.MainGameGameScreen;
+import game.gameScreens.GameScreen;
 
 import java.awt.*;
-import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
-    private Screen currentScreen;
-    private final Mechanic[] mechanics = { new IceMagicMechanic(), new GunMechanic() };
+    private GameScreen currentGameScreen;
+    private final Mechanic[] mechanics = { new IceMagicMechanic(), new SlingshotMechanic() };
 
     public void render(Graphics g, int x, int y) {
-        currentScreen.render(g, x, y);
+        currentGameScreen.render(g, x, y);
     }
 
     public void tick() {
-        currentScreen.tick();
+        currentGameScreen.tick();
     }
 
-    public GameScreen getNewGameScreen() {
-        return new GameScreen(objects, player);
+    public MainGameGameScreen getNewGameScreen() {
+        return new MainGameGameScreen(objects, player);
     }
 
-    public void setCurrentScreen(Screen screen) {
-        currentScreen = screen;
+    public void setCurrentScreen(GameScreen gameScreen) {
+        currentGameScreen = gameScreen;
     }
 
     public void addGameObject(GameObject obj) {

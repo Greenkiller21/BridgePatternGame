@@ -1,11 +1,10 @@
 package game.gameObjects;
 
-import game.Game;
+import game.screens.Game;
 import game.ICollidable;
 import game.IRenderable;
 import game.ITickable;
 
-import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public abstract class GameObject implements IRenderable, ITickable, ICollidable {

@@ -1,22 +1,16 @@
 package game.screens;
 
-import game.Game;
-import game.Utils;
-
+import javax.swing.*;
 import java.awt.*;
 
-public class GameOverScreen extends Screen {
-    @Override
-    public void render(Graphics g, int x, int y) {
-        g.setColor(Color.RED);
-        Font old = g.getFont();
-        g.setFont(old.deriveFont(Font.BOLD, 40));
-        Utils.drawCenteredString(g, "Game over !", Game.getInstance().getWidth() / 2, Game.getInstance().getHeight() / 2, Game.getInstance().getWidth(), Game.getInstance().getHeight());
-        g.setFont(old);
-    }
+public class GameOverScreen extends JPanel {
+    public GameOverScreen() {
+        setLayout(new GridBagLayout());
 
-    @Override
-    public void tick() {
-
+        JLabel text = new JLabel();
+        text.setText("Game over");
+        text.setFont(new Font("Serif", Font.BOLD, 40));
+        text.setForeground(Color.RED);
+        add(text);
     }
 }

@@ -14,13 +14,17 @@ public class Elf extends Character {
 
     static {
         try {
-            images[0] = ImageIO.read(new File("assets/orc_dos.png"));
-            images[1] = ImageIO.read(new File("assets/orc_gauche.png"));
-            images[2] = ImageIO.read(new File("assets/orc_face.png"));
-            images[3] = ImageIO.read(new File("assets/orc_droite.png"));
+            images[0] = ImageIO.read(new File("assets/elf/elf_w.png"));
+            images[1] = ImageIO.read(new File("assets/elf/elf_a.png"));
+            images[2] = ImageIO.read(new File("assets/elf/elf_s.png"));
+            images[3] = ImageIO.read(new File("assets/elf/elf_d.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Image getImage() {
+        return images[2];
     }
 
     public Elf(double x, double y, Mechanic mechanic) {

@@ -1,13 +1,16 @@
-package game;
+package game.screens;
 
+import game.GameHandler;
+import game.MasterWindow;
+import game.ThreeParametersFunction;
+import game.Utils;
 import game.characters.Character;
 import game.characters.Orc;
-import game.characters.Elf;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
+import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.GunMechanic;
-import game.screens.GameScreen;
+import game.mechanics.physicalMechanics.SlingshotMechanic;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -17,20 +20,18 @@ public class Game extends Canvas implements Runnable {
     private final GameHandler handler = new GameHandler();
     private boolean isRunning = false;
     private Thread thread;
-    private final Window window;
     private int currentFps = 0;
+    private Runnable whenFinished;
 
-    private Game() {
-        window = new Window(1000, 600, "Game - Bridge pattern", this);
-    }
+    private Game() { }
 
-    private void beginGame() {
-        Character playerCharacter = new Elf(100, 10, new IceMagicMechanic());
+    public void beginGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
+        Character playerCharacter = funcCrea.apply(100., 10., new IceMagicMechanic());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
 
         for (int i = 0; i < 1; ++i) {
-            Character aiCharacter = new Orc(30, 10, new GunMechanic());
+            Character aiCharacter = new Orc(30, 10, new SlingshotMechanic());
             aiCharacter.setController(new AI());
             handler.addGameObject(aiCharacter);
         }
@@ -40,19 +41,31 @@ public class Game extends Canvas implements Runnable {
         start();
     }
 
+    public void gameOver() {
+        isRunning = false;
+        whenFinished = () -> MasterWindow.getInstance().goToGameOverScreen();
+    }
+
+    public void win() {
+        isRunning = false;
+        whenFinished = () -> MasterWindow.getInstance().goToWinScreen();
+    }
+
     private void start() {
         isRunning = true;
         thread = new Thread(this);
         thread.start();
-    }
 
-    private void stop() {
-        isRunning = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        new Thread(() -> {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (whenFinished != null) {
+                whenFinished.run();
+            }
+        }).start();
     }
 
     @Override
@@ -85,7 +98,6 @@ public class Game extends Canvas implements Runnable {
                 // updates = 0;
             }
         }
-        stop();
     }
 
     public void tick() {
@@ -100,7 +112,7 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics2D g = (Graphics2D)bs.getDrawGraphics();
-        Dimension cs = window.getCurrentSize();
+        Dimension cs = getSize();
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -136,11 +148,9 @@ public class Game extends Canvas implements Runnable {
     }
 
     public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
         return instance;
-    }
-
-    public static void main(String[] args) {
-        instance = new Game();
-        instance.beginGame();
     }
 }

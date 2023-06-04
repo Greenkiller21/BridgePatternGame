@@ -1,12 +1,11 @@
 package game.characterControllers;
 
-import game.Game;
+import game.screens.Game;
 import game.Utils;
 import game.characters.Character;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.GunMechanic;
-import game.projectiles.Bullet;
+import game.mechanics.physicalMechanics.SlingshotMechanic;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -121,7 +120,7 @@ public class Player extends CharacterController {
             if (numbersPressed[i]) {
                 Mechanic m = switch (i) {
                     case 1 -> new IceMagicMechanic();
-                    case 2 -> new GunMechanic();
+                    case 2 -> new SlingshotMechanic();
                     default -> null;
                 };
                 if (m != null) {

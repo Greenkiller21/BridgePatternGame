@@ -1,13 +1,11 @@
 package game.projectiles;
 
-import game.ICollidable;
 import game.gameObjects.GameObject;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
-public class Bullet extends Projectile {
-    public Bullet(double x, double y, GameObject creator) {
+public class Stone extends Projectile {
+    public Stone(double x, double y, GameObject creator) {
         super(x, y, creator);
         bounds.width = 4;
         bounds.height = 4;

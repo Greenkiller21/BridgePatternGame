@@ -1,5 +1,7 @@
 package game;
 
+import game.screens.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
