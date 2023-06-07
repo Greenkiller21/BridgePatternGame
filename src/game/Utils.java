@@ -5,9 +5,18 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class Utils {
+    private static Random rdm = new Random();
+
+    public static Random getRandom() {
+        return rdm;
+    }
+
     public static <T> T[] mergeArray(T[] arr1, T[] arr2) {
         final T[] finalArr = (T[]) Array.newInstance(arr1.getClass().getComponentType(), arr1.length + arr2.length);
 
@@ -45,5 +54,39 @@ public class Utils {
         FontRenderContext frc = g2.getFontRenderContext();
         GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
         return gv.getPixelBounds(null, 0, 0);
+    }
+
+    public static class Pair<T, U> {
+        private T t;
+        private U u;
+
+        public Pair(T t, U u) {
+            this.t = t;
+            this.u = u;
+        }
+
+        public T getFirst() {
+            return t;
+        }
+
+        public U getSecond() {
+            return u;
+        }
+    }
+
+    public static int getRandomWithWeight(LinkedList<Pair<Integer, Integer>> weights) {
+        int totalWeights = weights.stream().mapToInt(Pair::getSecond).sum();
+        int num = getRandom().nextInt(0, totalWeights);
+
+        int current = 0;
+
+        for (Pair<Integer, Integer> pair : weights) {
+            current += pair.getSecond();
+            if (num < current) {
+                return pair.getFirst();
+            }
+        }
+
+        throw new RuntimeException("NOT POSSIBLE");
     }
 }

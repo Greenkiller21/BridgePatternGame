@@ -11,9 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class AI extends CharacterController {
-    private final Random rdm = new Random();
-
-    private boolean isBigAttackNext = rdm.nextBoolean();
+    private boolean isBigAttackNext = Utils.getRandom().nextBoolean();
 
     @Override
     public Point2D.Double getVelocities(double x, double y) {
@@ -51,7 +49,7 @@ public class AI extends CharacterController {
         }
 
         Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
-        isBigAttackNext = rdm.nextBoolean();
+        isBigAttackNext = Utils.getRandom().nextBoolean();
         return Utils.normalize(p);
     }
 

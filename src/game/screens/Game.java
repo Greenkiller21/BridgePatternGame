@@ -8,12 +8,16 @@ import game.characters.Character;
 import game.characters.Orc;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
+import game.gameObjects.Background;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.File;
+import java.io.IOException;
 
 public class Game extends Canvas implements Runnable {
     private static Game instance;
@@ -35,8 +39,6 @@ public class Game extends Canvas implements Runnable {
             aiCharacter.setController(new AI());
             handler.addGameObject(aiCharacter);
         }
-
-        handler.setCurrentScreen(handler.getNewGameScreen());
 
         start();
     }
@@ -111,36 +113,39 @@ public class Game extends Canvas implements Runnable {
             return;
         }
 
-        Graphics2D g = (Graphics2D)bs.getDrawGraphics();
-        Dimension cs = getSize();
+        do {
+            do {
+                Graphics2D g = (Graphics2D)bs.getDrawGraphics();
+                Dimension cs = getSize();
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//                g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+//                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+//                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-        g.setColor(Color.white);
-        g.fillRect(0, 0, cs.width, cs.height);
+                g.clearRect(0, 0, cs.width, cs.height);
 
-        ////
+                //g.setColor(Color.white);
+                //g.fillRect(0, 0, cs.width, cs.height);
 
-        int startX = 0;
-        int startY = 5;
+                ////
 
-        //Render all GameObjects
-        handler.render(g, startX, startY);
+                //Render all GameObjects
+                handler.render(g, 0, 0);
 
-        //Print FPS
-        String fps = String.valueOf(currentFps);
-        g.setColor(Color.BLACK);
+                //Print FPS
+                String fps = String.valueOf(currentFps);
+                g.setColor(Color.BLACK);
 
-        int wFps = Utils.getStringWidth(g, fps);
-        g.drawString(fps, getWidth() - wFps, startY + Utils.getStringHeight(g, fps) / 2);
+                int wFps = Utils.getStringWidth(g, fps);
+                g.drawString(fps, getWidth() - wFps, Utils.getStringHeight(g, fps));
 
-        ////
+                ////
 
-        g.dispose();
-        bs.show();
+                g.dispose();
+            } while (bs.contentsRestored());
+            bs.show();
+        } while(bs.contentsLost());
     }
 
     public GameHandler getGameHandler() {
