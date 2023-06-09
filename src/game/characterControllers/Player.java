@@ -88,7 +88,7 @@ public class Player extends CharacterController {
     }
 
     @Override
-    public Point2D.Double getVelocities(double x, double y) {
+    public Point2D.Double getVelocities(Character current) {
         double velX = 0;
         double velY = 0;
 
@@ -154,12 +154,12 @@ public class Player extends CharacterController {
 
     @Override
     public void drawHealthBar(Graphics g, Character c) {
-        int hbWidth = 200;
-        int hbHeight = 20;
-        int hbX = 5;
-        int hbY = 5;
+        int hbWidth = 250;
+        int hbHeight = 30;
+        int hbX = 10;
+        int hbY = 10;
 
-        int margin = 2;
+        int margin = 3;
 
         int height = Game.getInstance().getHeight();
         int hbRealY = height - hbY - hbHeight;

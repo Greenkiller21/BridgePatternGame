@@ -14,17 +14,17 @@ public class AI extends CharacterController {
     private boolean isBigAttackNext = Utils.getRandom().nextBoolean();
 
     @Override
-    public Point2D.Double getVelocities(double x, double y) {
+    public Point2D.Double getVelocities(Character current) {
         Character player = Game.getInstance().getGameHandler().getPlayer();
         Rectangle2D.Double playerCollider = player.getCollider();
         Point2D.Double moveLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
 
-        double distToPlayer = moveLocation.distance(new Point2D.Double(x, y));
+        double distToPlayer = moveLocation.distance(new Point2D.Double(current.getX(), current.getY()));
         if (distToPlayer >= 200 || distToPlayer <= 120) {
             return new Point2D.Double(0, 0);
         }
 
-        Point2D.Double p = new Point2D.Double(moveLocation.x - x, y - moveLocation.y);
+        Point2D.Double p = new Point2D.Double(moveLocation.x - current.getCollider().width / 2 - current.getX(), current.getY() + current.getCollider().height / 2 - moveLocation.y);
         return Utils.normalize(p);
     }
 

@@ -7,6 +7,7 @@ import game.gameObjects.GameObjectType;
 import game.gameObjects.MovableGameObject;
 import game.mechanics.Mechanic;
 import game.projectiles.Projectile;
+import game.screens.Game;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -31,6 +32,32 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
     @Override
     public void render(Graphics g, int x, int y) {
+        updateRenderDirection();
+
+        Image characterImg = getImages()[renderDirection];
+        Image mechanicImg = mechanic.getImage(renderDirection);
+
+        if (renderDirection == 0) { //W
+            //Mechanic
+            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
+        }
+
+        //Character
+        g.drawImage(characterImg, (int)getX() + x, (int)getY() + y, null);
+
+        bounds.width = characterImg.getWidth(null);
+        bounds.height = characterImg.getHeight(null);
+
+        if (renderDirection != 0) { //ASD
+            //Mechanic
+            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
+        }
+
+        //Healthbar
+        controller.drawHealthBar(g, this);
+    }
+
+    private void updateRenderDirection() {
         if (getVelX() != 0 || getVelY() != 0) {
             if (getVelY() == getSpeed()) {
                 renderDirection = 0; //W
@@ -68,28 +95,6 @@ public abstract class Character extends MovableGameObject implements IDamageable
                 }
             }
         }
-
-        Image characterImg = getImages()[renderDirection];
-        Image mechanicImg = mechanic.getImage(renderDirection);
-
-        if (renderDirection == 0) { //W
-            //Mechanic
-            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
-        }
-
-        //Character
-        g.drawImage(characterImg, (int)getX() + x, (int)getY() + y, null);
-
-        bounds.width = characterImg.getWidth(null);
-        bounds.height = characterImg.getHeight(null);
-
-        if (renderDirection != 0) { //ASD
-            //Mechanic
-            g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
-        }
-
-        //Healthbar
-        controller.drawHealthBar(g, this);
     }
 
     public Mechanic getMechanic() {
@@ -107,7 +112,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
             setMechanic(newMechanic);
         }
 
-        Point2D.Double velocities = controller.getVelocities(getX(), getY());
+        Point2D.Double velocities = controller.getVelocities(this);
         velX = getSpeed() * velocities.x;
         velY = getSpeed() * velocities.y;
 
@@ -124,6 +129,17 @@ public abstract class Character extends MovableGameObject implements IDamageable
                     mechanic.createSmallAttack(this, smallAttackVector);
                 }
             }
+        }
+
+        double nextX = getX() + getVelX();
+        double nextY = getY() - getVelY();
+
+        if (nextX <= 0 || nextX + bounds.getWidth() >= Game.getInstance().getWidth()) {
+            return;
+        }
+
+        if (nextY <= 0 || nextY + bounds.getHeight() >= Game.getInstance().getHeight()) {
+            return;
         }
 
         super.tick();
