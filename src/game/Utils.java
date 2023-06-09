@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class Utils {
+    public static final String FONT_NAME = "blomberg";
+
     private static Random rdm = new Random();
 
     public static Random getRandom() {

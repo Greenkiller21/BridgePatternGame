@@ -3,12 +3,13 @@ package game;
 import game.characters.Character;
 import game.mechanics.Mechanic;
 import game.screens.Game;
-import game.screens.GameOverScreen;
+import game.screens.GameFinishedScreen;
 import game.screens.HomeScreen;
-import game.screens.WinScreen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MasterWindow extends JFrame {
     private static MasterWindow instance;
@@ -21,7 +22,15 @@ public class MasterWindow extends JFrame {
     }
 
     private MasterWindow() {
-
+        Font font = null;
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/blomberg.otf"));
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        GraphicsEnvironment ge =
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(font);
     }
 
     public void goToHomeScreen() {
@@ -29,11 +38,11 @@ public class MasterWindow extends JFrame {
     }
 
     public void goToGameOverScreen() {
-        changeScreen(new GameOverScreen());
+        changeScreen(new GameFinishedScreen(false));
     }
 
     public void goToWinScreen() {
-        changeScreen(new WinScreen());
+        changeScreen(new GameFinishedScreen(true));
     }
 
     public void launchGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {

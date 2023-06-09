@@ -37,6 +37,9 @@ public class GameHandler {
         int startY = Game.getInstance().getHeight() - mecHeight - 2 * mecSpacing;
         int startX = Game.getInstance().getWidth() - mechanics.length * (mecWidth + mecSpacing);
 
+        Font oldFont = g.getFont();
+        g.setFont(new Font(Utils.FONT_NAME, Font.BOLD, 15));
+
         for (int i = 0; i < mechanics.length; ++i) {
             int cX = x + startX + i * (mecWidth + mecSpacing);
             int cY = y + startY;
@@ -59,8 +62,10 @@ public class GameHandler {
 
             g.setColor(Color.BLACK);
             String str = String.valueOf((i + 1) % 10);
-            g.drawString(str, newCX + 1, newCY + 1 + Utils.getStringHeight(g, str));
+            g.drawString(str, newCX + 2, newCY - 1 + Utils.getStringHeight(g, str));
         }
+
+        g.setFont(oldFont);
     }
 
     public void tick() {
