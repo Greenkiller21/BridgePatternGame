@@ -79,6 +79,8 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
+        int targetFPS = 100; // Desired FPS limit
+        long frameTime = 1000000000 / targetFPS;
 
         while (isRunning) {
             long now = System.nanoTime();
@@ -98,6 +100,19 @@ public class Game extends Canvas implements Runnable {
                 currentFps = frames;
                 frames = 0;
                 // updates = 0;
+            }
+
+            // Limit FPS by introducing a delay
+            long frameEndTime = System.nanoTime();
+            long elapsedTime = frameEndTime - now;
+            long sleepTime = frameTime - elapsedTime;
+
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime / 1000000); // Convert nanoseconds to milliseconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
