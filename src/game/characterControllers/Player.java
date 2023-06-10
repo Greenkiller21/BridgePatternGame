@@ -1,5 +1,6 @@
 package game.characterControllers;
 
+import game.GameHandler;
 import game.screens.Game;
 import game.Utils;
 import game.characters.Character;
@@ -116,15 +117,11 @@ public class Player extends CharacterController {
     }
 
     public Mechanic getMechanic() {
+        Mechanic[] mechanics = GameHandler.getMechanics();
         for (int i = 0; i < 10; ++i) {
             if (numbersPressed[i]) {
-                Mechanic m = switch (i) {
-                    case 1 -> new IceMagicMechanic();
-                    case 2 -> new SlingshotMechanic();
-                    default -> null;
-                };
-                if (m != null) {
-                    return m;
+                if (i <= mechanics.length) {
+                    return mechanics[(i + 9) % 10];
                 }
             }
         }

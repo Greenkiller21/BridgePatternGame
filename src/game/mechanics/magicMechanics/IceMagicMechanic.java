@@ -11,6 +11,13 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class IceMagicMechanic extends MagicMechanic {
+    private static final IceMagicMechanic instance = new IceMagicMechanic();
+    public static IceMagicMechanic getInstance() {
+        return instance;
+    }
+
+    protected IceMagicMechanic() {}
+
     private static final Image[] images = loadImages(IceMagicMechanic.class);
 
     @Override

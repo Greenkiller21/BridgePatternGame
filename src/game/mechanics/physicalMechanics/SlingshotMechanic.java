@@ -1,5 +1,6 @@
 package game.mechanics.physicalMechanics;
 
+import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.projectiles.stone.BigStone;
 import game.projectiles.stone.SmallStone;
 import game.screens.Game;
@@ -11,6 +12,13 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class SlingshotMechanic extends PhysicalMechanic {
+    private static final SlingshotMechanic instance = new SlingshotMechanic();
+    public static SlingshotMechanic getInstance() {
+        return instance;
+    }
+
+    protected SlingshotMechanic() {}
+
     private static final Image[] images = loadImages(SlingshotMechanic.class);
 
     @Override

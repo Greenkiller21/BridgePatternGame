@@ -36,11 +36,8 @@ public class Main {
         addAlias("grass_3_stalks", Background.class);
         addAlias("grass_2_stones", Background.class);
 
-        addAlias("big", Snowball.class);
-        addAlias("small", Snowball.class);
-
-        addAlias("big", Stone.class);
-        addAlias("small", Stone.class);
+        addBigAndSmallAliases(Snowball.class);
+        addBigAndSmallAliases(Stone.class);
     }
 
     private static void addMovementAliases(Class<?> clazz) {
@@ -58,5 +55,10 @@ public class Main {
     private static void addAlias(String alias, Class<?> clazz) {
         String name = clazz.getSimpleName().toLowerCase();
         ImageLoader.addAlias(alias, "%1$s/%1$s_%2$s.png".formatted(name, alias), clazz);
+    }
+
+    private static void addBigAndSmallAliases(Class<?> clazz) {
+        addAlias("big", clazz);
+        addAlias("small", clazz);
     }
 }

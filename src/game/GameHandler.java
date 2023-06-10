@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
-    private final Mechanic[] mechanics = { new IceMagicMechanic(), new SlingshotMechanic() };
+    private static final Mechanic[] mechanics = { IceMagicMechanic.getInstance(), SlingshotMechanic.getInstance() };
     private IRenderable background;
 
     public void render(Graphics g, int x, int y) {
@@ -26,7 +26,7 @@ public class GameHandler {
             obj.render(g, x, y);
         }
 
-        Mechanic[] mechanics = Game.getInstance().getGameHandler().getMechanics();
+        Mechanic[] mechanics = GameHandler.getMechanics();
 
         int mecWidth = 60;
         int mecHeight = 60;
@@ -45,8 +45,7 @@ public class GameHandler {
             int cX = x + startX + i * (mecWidth + mecSpacing);
             int cY = y + startY;
 
-
-            if (Game.getInstance().getGameHandler().getPlayer().getMechanic().getClass() == mechanics[i].getClass()) {
+            if (Game.getInstance().getGameHandler().getPlayer().getMechanic() == mechanics[i]) {
                 g.setColor(Color.YELLOW);
                 g.fillRect(cX, cY, mecWidth, mecHeight);
             }
@@ -108,7 +107,7 @@ public class GameHandler {
         objects.remove(obj);
     }
 
-    public Mechanic[] getMechanics() {
+    public static Mechanic[] getMechanics() {
         return mechanics;
     }
 

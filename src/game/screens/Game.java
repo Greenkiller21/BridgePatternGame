@@ -28,12 +28,12 @@ public class Game extends Canvas implements Runnable {
     public void beginGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
         handler.reset();
 
-        Character playerCharacter = funcCrea.apply(getWidth() / 2., getHeight() / 2., new IceMagicMechanic());
+        Character playerCharacter = funcCrea.apply(getWidth() / 2., getHeight() / 2., IceMagicMechanic.getInstance());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
 
         for (int i = 0; i < 1; ++i) {
-            Character aiCharacter = new Orc(30, 10, new SlingshotMechanic());
+            Character aiCharacter = new Orc(30, 10, SlingshotMechanic.getInstance());
             aiCharacter.setController(new AI());
             handler.addGameObject(aiCharacter);
         }
