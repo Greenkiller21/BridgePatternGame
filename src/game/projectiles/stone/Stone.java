@@ -1,5 +1,6 @@
 package game.projectiles.stone;
 
+import game.Element;
 import game.gameObjects.GameObject;
 import game.projectiles.Projectile;
 
@@ -13,5 +14,10 @@ public abstract class Stone extends Projectile {
     @Override
     public int getMaxDistance() {
         return super.getMaxDistance() + 50;
+    }
+
+    @Override
+    public Element getProjectileElement() {
+        return Element.Earth;
     }
 }

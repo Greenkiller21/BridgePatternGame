@@ -1,5 +1,6 @@
 package game.characters;
 
+import game.Element;
 import utils.ImageLoader;
 import game.interfaces.IDamageable;
 import game.characterControllers.CharacterController;
@@ -159,7 +160,8 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
     @Override
     public void damageWith(Projectile p) {
-        health -= p.getDamage();
+        double multiplier = p.getProjectileElement() == getWeaknessElement() ? 2 : 1;
+        health -= multiplier * p.getDamage();
 
         if (health <= 0) {
             destroy();
@@ -192,6 +194,8 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected abstract Image[] getImages();
 
     protected abstract double getSpeed();
+
+    protected abstract Element getWeaknessElement();
 
     public boolean isOutOfBounds(double x, double y) {
         if (x <= 0 || x + bounds.getWidth() >= Game.getInstance().getWidth()) {

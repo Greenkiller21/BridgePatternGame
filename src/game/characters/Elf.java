@@ -1,5 +1,6 @@
 package game.characters;
 
+import game.Element;
 import game.mechanics.Mechanic;
 
 import javax.imageio.ImageIO;
@@ -21,5 +22,10 @@ public class Elf extends Character {
     @Override
     protected double getSpeed() {
         return 2.5;
+    }
+
+    @Override
+    protected Element getWeaknessElement() {
+        return Element.Earth;
     }
 }

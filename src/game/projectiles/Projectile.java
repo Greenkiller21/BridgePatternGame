@@ -1,5 +1,6 @@
 package game.projectiles;
 
+import game.Element;
 import utils.Utils;
 import game.characters.Character;
 import game.gameObjects.GameObject;
@@ -74,4 +75,6 @@ public abstract class Projectile extends MovableGameObject {
     }
 
     protected abstract Image getImage();
+
+    public abstract Element getProjectileElement();
 }
