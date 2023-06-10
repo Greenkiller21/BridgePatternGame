@@ -4,11 +4,8 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.stream.Stream;
 
 public class Utils {
     public static final String FONT_NAME = "blomberg";
@@ -19,24 +16,10 @@ public class Utils {
         return rdm;
     }
 
-    public static <T> T[] mergeArray(T[] arr1, T[] arr2) {
-        final T[] finalArr = (T[]) Array.newInstance(arr1.getClass().getComponentType(), arr1.length + arr2.length);
-
-        System.arraycopy(arr1, 0, finalArr, 0, arr1.length);
-        System.arraycopy(arr2, 0, finalArr, arr1.length, arr2.length);
-
-        return finalArr;
-    }
-
     public static Point2D.Double normalize(Point2D.Double point) {
         double length = Math.sqrt(point.x * point.x + point.y * point.y);
 
         return new Point2D.Double(point.x / length, point.y / length);
-    }
-
-    public static void drawCenteredString(Graphics g, String str, int x, int y, int screenW, int screenH) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.drawString(str, screenW - x - getStringWidth(g, str) / 2, screenH - y + getStringHeight(g, str) / 2);
     }
 
     public static int getStringWidth(Graphics g, String str) {
@@ -59,8 +42,8 @@ public class Utils {
     }
 
     public static class Pair<T, U> {
-        private T t;
-        private U u;
+        private final T t;
+        private final U u;
 
         public Pair(T t, U u) {
             this.t = t;
@@ -76,7 +59,11 @@ public class Utils {
         }
     }
 
-    public static int getRandomWithWeight(LinkedList<Pair<Integer, Integer>> weights) {
+    public static int getWeightedRandom(LinkedList<Pair<Integer, Integer>> weights) {
+        if (weights.isEmpty()) {
+            throw new RuntimeException("The weights list cannot be empty !");
+        }
+
         int totalWeights = weights.stream().mapToInt(Pair::getSecond).sum();
         int num = getRandom().nextInt(0, totalWeights);
 
@@ -89,6 +76,6 @@ public class Utils {
             }
         }
 
-        throw new RuntimeException("NOT POSSIBLE");
+        return 0; //Not possible to reach here
     }
 }

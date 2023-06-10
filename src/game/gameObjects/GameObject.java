@@ -1,9 +1,9 @@
 package game.gameObjects;
 
 import game.screens.Game;
-import game.ICollidable;
-import game.IRenderable;
-import game.ITickable;
+import game.interfaces.ICollidable;
+import game.interfaces.IRenderable;
+import game.interfaces.ITickable;
 
 import java.awt.geom.Rectangle2D;
 

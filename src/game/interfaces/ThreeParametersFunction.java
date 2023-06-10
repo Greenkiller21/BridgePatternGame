@@ -1,4 +1,4 @@
-package game;
+package game.interfaces;
 
 @FunctionalInterface
 public interface ThreeParametersFunction<T, U, V, W> {

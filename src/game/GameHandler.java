@@ -4,6 +4,7 @@ import game.characters.Character;
 import game.gameObjects.Background;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
+import game.interfaces.IRenderable;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;

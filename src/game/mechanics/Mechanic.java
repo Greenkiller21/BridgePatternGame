@@ -1,6 +1,5 @@
 package game.mechanics;
 
-import game.IRenderable;
 import game.gameObjects.GameObject;
 
 import java.awt.*;

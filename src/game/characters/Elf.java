@@ -1,11 +1,9 @@
 package game.characters;
 
-import game.ICollidable;
 import game.mechanics.Mechanic;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 

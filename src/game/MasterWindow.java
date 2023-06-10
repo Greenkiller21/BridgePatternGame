@@ -1,6 +1,7 @@
 package game;
 
 import game.characters.Character;
+import game.interfaces.ThreeParametersFunction;
 import game.mechanics.Mechanic;
 import game.screens.Game;
 import game.screens.GameFinishedScreen;

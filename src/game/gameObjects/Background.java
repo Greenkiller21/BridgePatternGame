@@ -1,13 +1,12 @@
 package game.gameObjects;
 
-import game.IRenderable;
+import game.interfaces.IRenderable;
 import game.Utils;
 import game.screens.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -44,7 +43,7 @@ public class Background implements IRenderable {
                 weights.add(new Utils.Pair<>(1, 35));
                 weights.add(new Utils.Pair<>(2, 5));
 
-                int imgNum = Utils.getRandomWithWeight(weights);
+                int imgNum = Utils.getWeightedRandom(weights);
 
                 g2d.drawImage(images[imgNum], iX * tileWidth, iY * tileHeight, null);
             }

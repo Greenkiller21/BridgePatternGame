@@ -1,6 +1,6 @@
 package game.characters;
 
-import game.IDamageable;
+import game.interfaces.IDamageable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;

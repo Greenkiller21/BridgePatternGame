@@ -2,22 +2,18 @@ package game.screens;
 
 import game.GameHandler;
 import game.MasterWindow;
-import game.ThreeParametersFunction;
+import game.interfaces.ThreeParametersFunction;
 import game.Utils;
 import game.characters.Character;
 import game.characters.Orc;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
-import game.gameObjects.Background;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.IOException;
 
 public class Game extends Canvas implements Runnable {
     private static Game instance;
