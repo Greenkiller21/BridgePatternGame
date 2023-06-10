@@ -1,6 +1,6 @@
 package game.projectiles;
 
-import game.Utils;
+import utils.Utils;
 import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;

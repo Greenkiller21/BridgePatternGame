@@ -1,10 +1,9 @@
 package game.screens;
 
 import game.MasterWindow;
-import game.Utils;
+import utils.Utils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class GameFinishedScreen extends JPanel {

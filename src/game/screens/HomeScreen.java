@@ -1,9 +1,11 @@
 package game.screens;
 
-import game.ImageLoader;
+import game.GameHandler;
+import utils.CharacterConstructor;
+import utils.ImageLoader;
 import game.MasterWindow;
-import game.interfaces.ThreeParametersFunction;
-import game.Utils;
+import utils.ThreeParametersFunction;
+import utils.Utils;
 import game.characters.Character;
 import game.characters.Elf;
 import game.characters.Orc;
@@ -30,18 +32,21 @@ public class HomeScreen extends JPanel {
 
         buttons.setBackground(getBackground());
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
-        buttons.add(getCharacterButton(ImageLoader.getImage("s", Orc.class), Orc::new));
-        buttons.add(getCharacterButton(ImageLoader.getImage("s", Elf.class), Elf::new));
+
+        for (Class<? extends Character> clazz : GameHandler.getCharacters().keySet()) {
+            buttons.add(getCharacterButton(clazz));
+        }
+
         buttons.setAlignmentX(CENTER_ALIGNMENT);
 
         add(buttons);
         add(Box.createVerticalGlue());
     }
 
-    private JButton getCharacterButton(Image image, ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
+    private JButton getCharacterButton(Class<? extends Character> clazz) {
         JButton btn = new JButton();
-        btn.setIcon(new ImageIcon(image));
-        btn.addActionListener(e -> MasterWindow.getInstance().launchGame(funcCrea));
+        btn.setIcon(new ImageIcon(ImageLoader.getImage("s", clazz)));
+        btn.addActionListener(e -> MasterWindow.getInstance().launchGame(GameHandler.getCharacters().get(clazz)));
         return btn;
     }
 }

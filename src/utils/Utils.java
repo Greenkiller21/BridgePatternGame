@@ -1,4 +1,4 @@
-package game;
+package utils;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;

@@ -7,6 +7,7 @@ import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
 import game.projectiles.snowball.Snowball;
 import game.projectiles.stone.Stone;
+import utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;

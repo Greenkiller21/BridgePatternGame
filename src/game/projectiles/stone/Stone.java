@@ -1,10 +1,8 @@
 package game.projectiles.stone;
 
-import game.ImageLoader;
 import game.gameObjects.GameObject;
 import game.projectiles.Projectile;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Stone extends Projectile {

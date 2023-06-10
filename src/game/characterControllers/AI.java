@@ -1,14 +1,13 @@
 package game.characterControllers;
 
 import game.screens.Game;
-import game.Utils;
+import utils.Utils;
 import game.characters.Character;
 import game.mechanics.Mechanic;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Random;
 
 public class AI extends CharacterController {
     private boolean isBigAttackNext = Utils.getRandom().nextBoolean();

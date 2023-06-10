@@ -1,7 +1,8 @@
 package game;
 
 import game.characters.Character;
-import game.interfaces.ThreeParametersFunction;
+import utils.CharacterConstructor;
+import utils.ThreeParametersFunction;
 import game.mechanics.Mechanic;
 import game.screens.Game;
 import game.screens.GameFinishedScreen;
@@ -46,10 +47,10 @@ public class MasterWindow extends JFrame {
         changeScreen(new GameFinishedScreen(true));
     }
 
-    public void launchGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
+    public void launchGame(CharacterConstructor playerCreator) {
         Game game = Game.getInstance();
         changeScreen(game);
-        game.beginGame(funcCrea);
+        game.beginGame(playerCreator);
     }
 
     private void changeScreen(Component newScreen) {

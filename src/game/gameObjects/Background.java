@@ -1,15 +1,12 @@
 package game.gameObjects;
 
-import game.ImageLoader;
+import utils.ImageLoader;
 import game.interfaces.IRenderable;
-import game.Utils;
+import utils.Utils;
 import game.screens.Game;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 
 public class Background implements IRenderable {

@@ -2,11 +2,9 @@ package game.characterControllers;
 
 import game.GameHandler;
 import game.screens.Game;
-import game.Utils;
+import utils.Utils;
 import game.characters.Character;
 import game.mechanics.Mechanic;
-import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.SlingshotMechanic;
 
 import java.awt.*;
 import java.awt.event.*;

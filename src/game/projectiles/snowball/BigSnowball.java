@@ -1,6 +1,6 @@
 package game.projectiles.snowball;
 
-import game.ImageLoader;
+import utils.ImageLoader;
 import game.gameObjects.GameObject;
 
 import java.awt.*;

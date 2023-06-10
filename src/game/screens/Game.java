@@ -2,18 +2,21 @@ package game.screens;
 
 import game.GameHandler;
 import game.MasterWindow;
-import game.interfaces.ThreeParametersFunction;
-import game.Utils;
+import game.gameObjects.GameObject;
+import utils.CharacterConstructor;
+import utils.ThreeParametersFunction;
+import utils.Utils;
 import game.characters.Character;
 import game.characters.Orc;
+import game.characters.Elf;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.SlingshotMechanic;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.LinkedList;
 
 public class Game extends Canvas implements Runnable {
     private static Game instance;
@@ -25,20 +28,51 @@ public class Game extends Canvas implements Runnable {
 
     private Game() { }
 
-    public void beginGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
+    public void beginGame(CharacterConstructor playerCreator) {
         handler.reset();
 
-        Character playerCharacter = funcCrea.apply(getWidth() / 2., getHeight() / 2., IceMagicMechanic.getInstance());
+        Character playerCharacter = playerCreator.apply(getWidth() / 2., getHeight() / 2., IceMagicMechanic.getInstance());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
 
-        for (int i = 0; i < 1; ++i) {
-            Character aiCharacter = new Orc(30, 10, SlingshotMechanic.getInstance());
-            aiCharacter.setController(new AI());
-            handler.addGameObject(aiCharacter);
-        }
+        generateEnemies(5);
 
         start();
+    }
+
+    private void generateEnemies(int number) {
+        int screenWidth = Game.getInstance().getWidth();
+        int screenHeight = Game.getInstance().getHeight();
+
+        for (int i = 0; i < number; ++i) {
+            double x = Utils.getRandom().nextInt(1, screenWidth);
+            double y = Utils.getRandom().nextInt(1, screenHeight);
+
+            Mechanic randomMechanic = GameHandler.getMechanics()[Utils.getRandom().nextInt(0, GameHandler.getMechanics().length)];
+            CharacterConstructor characterCreator = GameHandler.getCharacters().values().stream().toList().get(Utils.getRandom().nextInt(0, GameHandler.getCharacters().size()));
+            Character c = characterCreator.apply(x, y, randomMechanic);
+
+            boolean ok = true;
+
+            if (c.isOutOfBounds(c.getX(), c.getY())) {
+                ok = false;
+            } else {
+                for (GameObject o : getGameHandler().getGameObjects()) {
+                    if (c.getCollider().intersects(o.getCollider())) {
+                        ok = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!ok) {
+                number--;
+                continue;
+            }
+
+            c.setController(new AI());
+            handler.addGameObject(c);
+        }
     }
 
     public void gameOver() {

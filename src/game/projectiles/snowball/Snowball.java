@@ -1,10 +1,8 @@
 package game.projectiles.snowball;
 
-import game.ImageLoader;
 import game.gameObjects.GameObject;
 import game.projectiles.Projectile;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Snowball extends Projectile {

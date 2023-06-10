@@ -1,6 +1,6 @@
 package game.characters;
 
-import game.ImageLoader;
+import utils.ImageLoader;
 import game.interfaces.IDamageable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.GameObject;
@@ -135,11 +135,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
         double nextX = getX() + getVelX();
         double nextY = getY() - getVelY();
 
-        if (nextX <= 0 || nextX + bounds.getWidth() >= Game.getInstance().getWidth()) {
-            return;
-        }
-
-        if (nextY <= 0 || nextY + bounds.getHeight() >= Game.getInstance().getHeight()) {
+        if (isOutOfBounds(nextX, nextY)) {
             return;
         }
 
@@ -190,4 +186,16 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected abstract Image[] getImages();
 
     protected abstract double getSpeed();
+
+    public boolean isOutOfBounds(double x, double y) {
+        if (x <= 0 || x + bounds.getWidth() >= Game.getInstance().getWidth()) {
+            return true;
+        }
+
+        if (y <= 0 || y + bounds.getHeight() >= Game.getInstance().getHeight()) {
+            return true;
+        }
+
+        return false;
+    }
 }

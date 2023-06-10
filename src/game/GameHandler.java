@@ -1,22 +1,33 @@
 package game;
 
 import game.characters.Character;
+import game.characters.Elf;
+import game.characters.Orc;
 import game.gameObjects.Background;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
 import game.interfaces.IRenderable;
+import utils.CharacterConstructor;
+import utils.ThreeParametersFunction;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
 import game.screens.Game;
+import utils.Utils;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
     private static final Mechanic[] mechanics = { IceMagicMechanic.getInstance(), SlingshotMechanic.getInstance() };
+    private static final Map<Class<? extends Character>, CharacterConstructor> characters = new HashMap<>() {{
+        put(Elf.class, Elf::new);
+        put(Orc.class, Orc::new);
+    }};
     private IRenderable background;
 
     public void render(Graphics g, int x, int y) {
@@ -115,5 +126,13 @@ public class GameHandler {
         objects.clear();
         player = null;
         background = new Background();
+    }
+
+    public ConcurrentLinkedQueue<GameObject> getGameObjects() {
+        return objects;
+    }
+
+    public static Map<Class<? extends Character>, CharacterConstructor> getCharacters() {
+        return characters;
     }
 }
