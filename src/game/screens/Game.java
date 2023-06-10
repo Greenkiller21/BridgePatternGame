@@ -26,6 +26,8 @@ public class Game extends Canvas implements Runnable {
     private Game() { }
 
     public void beginGame(ThreeParametersFunction<Double, Double, Mechanic, Character> funcCrea) {
+        handler.reset();
+
         Character playerCharacter = funcCrea.apply(getWidth() / 2., getHeight() / 2., new IceMagicMechanic());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);

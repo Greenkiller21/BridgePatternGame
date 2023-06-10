@@ -1,5 +1,6 @@
 package game.characters;
 
+import game.ImageLoader;
 import game.interfaces.IDamageable;
 import game.characterControllers.CharacterController;
 import game.gameObjects.GameObject;
@@ -171,6 +172,15 @@ public abstract class Character extends MovableGameObject implements IDamageable
     @Override
     public GameObjectType getType() {
         return GameObjectType.Character;
+    }
+
+    protected static Image[] loadImages(Class<? extends Character> clazz) {
+        Image[] images = new Image[4];
+        images[0] = ImageLoader.getImage("w", clazz);
+        images[1] = ImageLoader.getImage("a", clazz);
+        images[2] = ImageLoader.getImage("s", clazz);
+        images[3] = ImageLoader.getImage("d", clazz);
+        return images;
     }
 
     /**

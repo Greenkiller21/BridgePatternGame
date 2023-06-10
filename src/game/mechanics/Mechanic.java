@@ -1,5 +1,6 @@
 package game.mechanics;
 
+import game.ImageLoader;
 import game.gameObjects.GameObject;
 
 import java.awt.*;
@@ -21,5 +22,15 @@ public abstract class Mechanic {
 
     public Image getImage() {
         return getImages()[4];
+    }
+
+    protected static Image[] loadImages(Class<? extends Mechanic> clazz) {
+        Image[] images = new Image[5];
+        images[0] = ImageLoader.getImage("w", clazz);
+        images[1] = ImageLoader.getImage("a", clazz);
+        images[2] = ImageLoader.getImage("s", clazz);
+        images[3] = ImageLoader.getImage("d", clazz);
+        images[4] = ImageLoader.getImage("I", clazz);
+        return images;
     }
 }

@@ -1,5 +1,6 @@
 package game.gameObjects;
 
+import game.ImageLoader;
 import game.interfaces.IRenderable;
 import game.Utils;
 import game.screens.Game;
@@ -12,40 +13,29 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class Background implements IRenderable {
-    static Image[] images = new Image[3];
-
-    static {
-        try {
-            images[0] = ImageIO.read(new File("assets/floor/grass_2_stalks.png"));
-            images[1] = ImageIO.read(new File("assets/floor/grass_3_stalks.png"));
-            images[2] = ImageIO.read(new File("assets/floor/grass_2_stones.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private BufferedImage background;
 
     private BufferedImage generateBackground() {
         int screenWidth = Game.getInstance().getWidth();
         int screenHeight = Game.getInstance().getHeight();
 
-        int tileWidth = images[0].getWidth(null);
-        int tileHeight = images[0].getHeight(null);
+        Image image0 = ImageLoader.getImage("grass_2_stalks", Background.class);
+
+        int tileWidth = image0.getWidth(null);
+        int tileHeight = image0.getHeight(null);
 
         BufferedImage bufferedImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bufferedImage.createGraphics();
 
+        LinkedList<Utils.Pair<String, Integer>> weights = new LinkedList<>();
+        weights.add(new Utils.Pair<>("grass_2_stalks", 60));
+        weights.add(new Utils.Pair<>("grass_3_stalks", 35));
+        weights.add(new Utils.Pair<>("grass_2_stones", 5));
+
         for (int iX = 0; iX < screenWidth / tileWidth; ++iX) {
             for (int iY = 0; iY < screenHeight / tileHeight; ++iY) {
-                LinkedList<Utils.Pair<Integer, Integer>> weights = new LinkedList<>();
-                weights.add(new Utils.Pair<>(0, 60));
-                weights.add(new Utils.Pair<>(1, 35));
-                weights.add(new Utils.Pair<>(2, 5));
-
-                int imgNum = Utils.getWeightedRandom(weights);
-
-                g2d.drawImage(images[imgNum], iX * tileWidth, iY * tileHeight, null);
+                String imgName = Utils.getWeightedRandom(weights);
+                g2d.drawImage(ImageLoader.getImage(imgName, Background.class), iX * tileWidth, iY * tileHeight, null);
             }
         }
 

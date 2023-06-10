@@ -17,7 +17,7 @@ public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
     private final Mechanic[] mechanics = { new IceMagicMechanic(), new SlingshotMechanic() };
-    private final IRenderable background = new Background();
+    private IRenderable background;
 
     public void render(Graphics g, int x, int y) {
         background.render(g, x, y);
@@ -110,5 +110,11 @@ public class GameHandler {
 
     public Mechanic[] getMechanics() {
         return mechanics;
+    }
+
+    public void reset() {
+        objects.clear();
+        player = null;
+        background = new Background();
     }
 }

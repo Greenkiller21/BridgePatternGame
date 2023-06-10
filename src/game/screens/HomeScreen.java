@@ -1,5 +1,6 @@
 package game.screens;
 
+import game.ImageLoader;
 import game.MasterWindow;
 import game.interfaces.ThreeParametersFunction;
 import game.Utils;
@@ -29,8 +30,8 @@ public class HomeScreen extends JPanel {
 
         buttons.setBackground(getBackground());
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
-        buttons.add(getCharacterButton(Orc.getImage(), Orc::new));
-        buttons.add(getCharacterButton(Elf.getImage(), Elf::new));
+        buttons.add(getCharacterButton(ImageLoader.getImage("s", Orc.class), Orc::new));
+        buttons.add(getCharacterButton(ImageLoader.getImage("s", Elf.class), Elf::new));
         buttons.setAlignmentX(CENTER_ALIGNMENT);
 
         add(buttons);

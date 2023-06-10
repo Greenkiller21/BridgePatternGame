@@ -59,7 +59,7 @@ public class Utils {
         }
     }
 
-    public static int getWeightedRandom(LinkedList<Pair<Integer, Integer>> weights) {
+    public static <T> T getWeightedRandom(LinkedList<Pair<T, Integer>> weights) {
         if (weights.isEmpty()) {
             throw new RuntimeException("The weights list cannot be empty !");
         }
@@ -69,13 +69,13 @@ public class Utils {
 
         int current = 0;
 
-        for (Pair<Integer, Integer> pair : weights) {
+        for (Pair<T, Integer> pair : weights) {
             current += pair.getSecond();
             if (num < current) {
                 return pair.getFirst();
             }
         }
 
-        return 0; //Not possible to reach here
+        return null; //Not possible to reach here
     }
 }
