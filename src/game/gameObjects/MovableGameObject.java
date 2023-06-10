@@ -17,16 +17,8 @@ public abstract class MovableGameObject extends GameObject {
         return velX;
     }
 
-    public void setVelX(double velX) {
-        this.velX = velX;
-    }
-
     public double getVelY() {
         return velY;
-    }
-
-    public void setVelY(double velY) {
-        this.velY = velY;
     }
 
     @Override

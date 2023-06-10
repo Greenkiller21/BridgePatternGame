@@ -1,8 +1,10 @@
 package game.mechanics.magicMechanics;
 
+import game.projectiles.snowball.BigSnowball;
+import game.projectiles.snowball.SmallSnowball;
 import game.screens.Game;
 import game.gameObjects.GameObject;
-import game.projectiles.Snowball;
+import game.projectiles.snowball.Snowball;
 import game.projectiles.Projectile;
 
 import java.awt.*;
@@ -13,17 +15,13 @@ public class IceMagicMechanic extends MagicMechanic {
 
     @Override
     public void createBigAttack(GameObject creator, Point2D.Double dirVect) {
-        Projectile p = new Snowball(creator.getX(), creator.getY(), creator);
-        p.setVelX(dirVect.x);
-        p.setVelY(dirVect.y);
+        Projectile p = new BigSnowball(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
     }
 
     @Override
     public void createSmallAttack(GameObject creator, Point2D.Double dirVect) {
-        Projectile p = new Snowball(creator.getX(), creator.getY(), creator);
-        p.setVelX(dirVect.x);
-        p.setVelY(dirVect.y);
+        Projectile p = new SmallSnowball(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
     }
 

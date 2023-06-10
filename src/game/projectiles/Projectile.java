@@ -1,20 +1,34 @@
 package game.projectiles;
 
+import game.Utils;
 import game.characters.Character;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
 import game.gameObjects.MovableGameObject;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Projectile extends MovableGameObject {
     private final GameObject creator;
     private final Point2D.Double created;
 
-    public Projectile(double x, double y, GameObject creator) {
+    public Projectile(double x, double y, Point2D.Double dirVect, GameObject creator) {
         super(x, y);
         this.creator = creator;
-        this.created = new Point2D.Double(x, y);
+
+        created = new Point2D.Double(x, y);
+        bounds.width = getImage().getWidth(null);
+        bounds.height = getImage().getHeight(null);
+
+        Point2D.Double norm = Utils.normalize(dirVect);
+        velX = norm.x * getSpeed();
+        velY = norm.y * getSpeed();
+    }
+
+    @Override
+    public void render(Graphics g, int x, int y) {
+        g.drawImage(getImage(), (int)getX() + x, (int)getY() + y, null);
     }
 
     @Override
@@ -35,19 +49,29 @@ public abstract class Projectile extends MovableGameObject {
 
     @Override
     public void tick() {
-        if (new Point2D.Double(getX(), getY()).distance(created) > maxDistance()) {
+        if (new Point2D.Double(getX(), getY()).distance(created) > getMaxDistance()) {
             destroy();
         } else {
             super.tick();
         }
     }
 
-    public abstract int getDamage();
-
     @Override
     public GameObjectType getType() {
         return GameObjectType.Projectile;
     }
 
-    public abstract int maxDistance();
+    public int getDamage() {
+        return 20;
+    }
+
+    public double getSpeed() {
+        return 1.5;
+    }
+
+    public int getMaxDistance() {
+        return 200;
+    }
+
+    protected abstract Image getImage();
 }
