@@ -25,6 +25,8 @@ public abstract class Character extends MovableGameObject implements IDamageable
         super(x, y);
         this.mechanic = mechanic;
         renderDirection = 2;
+
+        updateBounds();
     }
 
     public void setController(CharacterController controller) {
@@ -34,6 +36,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
     @Override
     public void render(Graphics g, int x, int y) {
         updateRenderDirection();
+        updateBounds();
 
         Image characterImg = getImages()[renderDirection];
         Image mechanicImg = mechanic.getImage(renderDirection);
@@ -46,9 +49,6 @@ public abstract class Character extends MovableGameObject implements IDamageable
         //Character
         g.drawImage(characterImg, (int)getX() + x, (int)getY() + y, null);
 
-        bounds.width = characterImg.getWidth(null);
-        bounds.height = characterImg.getHeight(null);
-
         if (renderDirection != 0) { //ASD
             //Mechanic
             g.drawImage(mechanicImg, (int)getX() + x, (int)getY() + y, null);
@@ -56,6 +56,12 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
         //Healthbar
         controller.drawHealthBar(g, this);
+    }
+
+    private void updateBounds() {
+        Image characterImg = getImages()[renderDirection];
+        bounds.width = characterImg.getWidth(null);
+        bounds.height = characterImg.getHeight(null);
     }
 
     private void updateRenderDirection() {
