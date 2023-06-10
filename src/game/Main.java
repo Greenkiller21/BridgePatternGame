@@ -6,6 +6,8 @@ import game.characters.Orc;
 import game.gameObjects.Background;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
+import game.projectiles.Snowball;
+import game.projectiles.Stone;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +36,9 @@ public class Main {
         addAlias("grass_2_stalks", Background.class);
         addAlias("grass_3_stalks", Background.class);
         addAlias("grass_2_stones", Background.class);
+
+        addAlias("all", Snowball.class);
+        addAlias("all", Stone.class);
     }
 
     private static void addMovementAliases(Class<?> clazz) {

@@ -5,10 +5,10 @@ import game.gameObjects.GameObject;
 
 import java.awt.*;
 
-public class Stone extends Projectile {
-    private static final Image image = ImageLoader.getImage("all", Stone.class);
+public class Snowball extends Projectile {
+    private static final Image image = ImageLoader.getImage("all", Snowball.class);
 
-    public Stone(double x, double y, GameObject creator) {
+    public Snowball(double x, double y, GameObject creator) {
         super(x, y, creator);
         bounds.width = image.getWidth(null);
         bounds.height = image.getHeight(null);
@@ -21,11 +21,11 @@ public class Stone extends Projectile {
 
     @Override
     public int getDamage() {
-        return 15;
+        return 10;
     }
 
     @Override
     public int maxDistance() {
-        return 200;
+        return 100;
     }
 }
