@@ -13,12 +13,17 @@ public class SmallSnowball extends Snowball {
 
     @Override
     public double getSpeed() {
-        return super.getSpeed() + 1;
+        return super.getSpeed() + 1.5;
     }
 
     @Override
     public int getDamage() {
-        return super.getDamage() - 5;
+        return super.getDamage() - 4;
+    }
+
+    @Override
+    public int getMaxDistance() {
+        return super.getMaxDistance() + 40;
     }
 
     @Override

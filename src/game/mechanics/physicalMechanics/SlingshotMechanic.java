@@ -1,12 +1,10 @@
 package game.mechanics.physicalMechanics;
 
-import game.mechanics.magicMechanics.IceMagicMechanic;
+import game.gameObjects.GameObject;
+import game.projectiles.Projectile;
 import game.projectiles.stone.BigStone;
 import game.projectiles.stone.SmallStone;
 import game.screens.Game;
-import game.gameObjects.GameObject;
-import game.projectiles.stone.Stone;
-import game.projectiles.Projectile;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

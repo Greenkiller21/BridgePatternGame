@@ -3,10 +3,7 @@ package game.characters;
 import game.Element;
 import game.mechanics.Mechanic;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Elf extends Character {
     private static final Image[] images = Character.loadImages(Elf.class);

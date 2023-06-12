@@ -42,9 +42,7 @@ public abstract class Projectile extends MovableGameObject {
                     destroy();
                 }
             }
-            case Projectile -> {
-                destroy();
-            }
+            case Projectile -> destroy();
         }
     }
 

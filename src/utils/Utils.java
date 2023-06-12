@@ -10,7 +10,7 @@ import java.util.Random;
 public class Utils {
     public static final String FONT_NAME = "blomberg";
 
-    private static Random rdm = new Random();
+    private static final Random rdm = new Random();
 
     public static Random getRandom() {
         return rdm;

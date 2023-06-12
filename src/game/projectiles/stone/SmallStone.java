@@ -22,6 +22,11 @@ public class SmallStone extends Stone {
     }
 
     @Override
+    public int getMaxDistance() {
+        return super.getMaxDistance() + 50;
+    }
+
+    @Override
     protected Image getImage() {
         return ImageLoader.getImage("small", Stone.class);
     }

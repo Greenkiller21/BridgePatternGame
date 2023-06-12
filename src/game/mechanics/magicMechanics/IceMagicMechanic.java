@@ -1,11 +1,10 @@
 package game.mechanics.magicMechanics;
 
+import game.gameObjects.GameObject;
+import game.projectiles.Projectile;
 import game.projectiles.snowball.BigSnowball;
 import game.projectiles.snowball.SmallSnowball;
 import game.screens.Game;
-import game.gameObjects.GameObject;
-import game.projectiles.snowball.Snowball;
-import game.projectiles.Projectile;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

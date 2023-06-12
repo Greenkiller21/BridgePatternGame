@@ -1,12 +1,9 @@
 package game;
 
-import game.characters.Character;
-import utils.CharacterConstructor;
-import utils.ThreeParametersFunction;
-import game.mechanics.Mechanic;
 import game.screens.Game;
 import game.screens.GameFinishedScreen;
 import game.screens.HomeScreen;
+import utils.CharacterConstructor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +22,7 @@ public class MasterWindow extends JFrame {
     }
 
     private MasterWindow() {
-        Font font = null;
+        Font font;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/blomberg.otf"));
         } catch (FontFormatException | IOException e) {

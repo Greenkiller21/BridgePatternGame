@@ -142,19 +142,15 @@ public abstract class Character extends MovableGameObject implements IDamageable
         double nextX = getX() + getVelX();
         double nextY = getY() - getVelY();
 
-        if (isOutOfBounds(nextX, nextY)) {
-            return;
+        if (!isOutOfBounds(nextX, nextY)) {
+            super.tick();
         }
-
-        super.tick();
     }
 
     @Override
     public void onCollide(GameObject other) {
-        switch (other.getType()) {
-            case Character -> {
-                revert();
-            }
+        if (other.getType() == GameObjectType.Character) {
+            revert();
         }
     }
 
@@ -189,7 +185,6 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
     /**
      * Images of the character (W, A, S, D)
-     * @return
      */
     protected abstract Image[] getImages();
 
@@ -198,14 +193,9 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected abstract Element getWeaknessElement();
 
     public boolean isOutOfBounds(double x, double y) {
-        if (x <= 0 || x + bounds.getWidth() >= Game.getInstance().getWidth()) {
-            return true;
-        }
-
-        if (y <= 0 || y + bounds.getHeight() >= Game.getInstance().getHeight()) {
-            return true;
-        }
-
-        return false;
+        return x <= 0
+            || y <= 0
+            || x + bounds.getWidth() >= Game.getInstance().getWidth()
+            || y + bounds.getHeight() >= Game.getInstance().getHeight();
     }
 }

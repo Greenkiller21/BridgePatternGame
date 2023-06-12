@@ -16,7 +16,6 @@ public abstract class Mechanic {
 
     /**
      * Images of the character (W, A, S, D, Representation)
-     * @return
      */
     protected abstract Image[] getImages();
 

@@ -1,15 +1,10 @@
 package game.screens;
 
 import game.GameHandler;
-import utils.CharacterConstructor;
-import utils.ImageLoader;
 import game.MasterWindow;
-import utils.ThreeParametersFunction;
-import utils.Utils;
 import game.characters.Character;
-import game.characters.Elf;
-import game.characters.Orc;
-import game.mechanics.Mechanic;
+import utils.ImageLoader;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;

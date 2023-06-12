@@ -2,21 +2,17 @@ package game.screens;
 
 import game.GameHandler;
 import game.MasterWindow;
-import game.gameObjects.GameObject;
-import utils.CharacterConstructor;
-import utils.ThreeParametersFunction;
-import utils.Utils;
-import game.characters.Character;
-import game.characters.Orc;
-import game.characters.Elf;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
+import game.characters.Character;
+import game.gameObjects.GameObject;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
+import utils.CharacterConstructor;
+import utils.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.LinkedList;
 
 public class Game extends Canvas implements Runnable {
     private static Game instance;
