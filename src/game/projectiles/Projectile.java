@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Projectile extends MovableGameObject {
-    private final GameObject creator;
+    protected final GameObject creator;
     private final Point2D.Double created;
 
     public Projectile(double x, double y, Point2D.Double dirVect, GameObject creator) {
@@ -42,7 +42,12 @@ public abstract class Projectile extends MovableGameObject {
                     destroy();
                 }
             }
-            case Projectile -> destroy();
+            case Projectile -> {
+                Projectile projectile = (Projectile) other;
+                if (projectile.creator != creator) {
+                    destroy();
+                }
+            }
         }
     }
 

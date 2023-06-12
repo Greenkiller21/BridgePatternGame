@@ -1,40 +1,43 @@
 package game.mechanics.magicMechanics;
 
+import game.characters.Character;
 import game.gameObjects.GameObject;
+import game.gameObjects.GameObjectType;
 import game.projectiles.Projectile;
-import game.projectiles.snowball.BigSnowball;
-import game.projectiles.snowball.SmallSnowball;
+import game.projectiles.leech.Leech;
 import game.screens.Game;
 
 import java.awt.geom.Point2D;
 
-public class IceMagicMechanic extends MagicMechanic {
-    private static final IceMagicMechanic instance = new IceMagicMechanic();
-    public static IceMagicMechanic getInstance() {
+public class WoodMagicMechanic extends MagicMechanic {
+    private static final WoodMagicMechanic instance = new WoodMagicMechanic();
+    public static WoodMagicMechanic getInstance() {
         return instance;
     }
 
-    protected IceMagicMechanic() { }
+    protected WoodMagicMechanic() { }
 
     @Override
     public void createFirstAttack(GameObject creator, Point2D.Double dirVect) {
-        Projectile p = new BigSnowball(creator.getX(), creator.getY(), dirVect, creator);
+        Projectile p = new Leech(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
     }
 
     @Override
     public void createSecondAttack(GameObject creator, Point2D.Double dirVect) {
-        Projectile p = new SmallSnowball(creator.getX(), creator.getY(), dirVect, creator);
-        Game.getInstance().getGameHandler().addGameObject(p);
+        if (creator.getType() == GameObjectType.Character) {
+            Character go = (Character) creator;
+            go.heal(25);
+        }
     }
 
     @Override
     public int firstAttackManaCost() {
-        return 30;
+        return 20;
     }
 
     @Override
     public int secondAttackManaCost() {
-        return 20;
+        return 100;
     }
 }

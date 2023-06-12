@@ -7,6 +7,7 @@ import game.gameObjects.Background;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
 import game.interfaces.IRenderable;
+import game.mechanics.magicMechanics.WoodMagicMechanic;
 import utils.CharacterConstructor;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
@@ -22,7 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class GameHandler {
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
-    private static final Mechanic[] mechanics = { IceMagicMechanic.getInstance(), SlingshotMechanic.getInstance() };
+    private static final Mechanic[] mechanics = { IceMagicMechanic.getInstance(), SlingshotMechanic.getInstance(), WoodMagicMechanic.getInstance()};
     private static final Map<Class<? extends Character>, CharacterConstructor> characters = new HashMap<>() {{
         put(Elf.class, Elf::new);
         put(Orc.class, Orc::new);

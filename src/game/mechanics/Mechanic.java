@@ -7,10 +7,12 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Mechanic {
+    private Image[] images;
+
     public abstract void createFirstAttack(GameObject creator, Point2D.Double dirVect);
     public abstract void createSecondAttack(GameObject creator, Point2D.Double dirVect);
-    public abstract int firstAttackCooldown();
-    public abstract int secondAttackCooldown();
+    public abstract int firstAttackManaCost();
+    public abstract int secondAttackManaCost();
 
     public Image getImage(int direction) {
         return getImages()[direction];
@@ -19,13 +21,18 @@ public abstract class Mechanic {
     /**
      * Images of the character (W, A, S, D, Representation)
      */
-    protected abstract Image[] getImages();
+    protected Image[] getImages() {
+        if (images == null) {
+            images = loadImages(this.getClass());
+        }
+        return images;
+    }
 
     public Image getImage() {
         return getImages()[4];
     }
 
-    protected static Image[] loadImages(Class<? extends Mechanic> clazz) {
+    private static Image[] loadImages(Class<? extends Mechanic> clazz) {
         Image[] images = new Image[5];
         images[0] = ImageLoader.getImage("w", clazz);
         images[1] = ImageLoader.getImage("a", clazz);

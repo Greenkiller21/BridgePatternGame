@@ -11,6 +11,14 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 
 public class Player extends CharacterController {
+    private static final int BARS_X = 10;
+    private static final int BARS_WIDTH = 250;
+    private static final int BARS_HEIGHT = 30;
+    private static final int BARS_MARGIN = 3;
+
+    private static final int MANABAR_Y = 10;
+    private static final int HEALTHBAR_Y = MANABAR_Y + BARS_HEIGHT + 1;
+
     private boolean isUpPressed = false;
     private boolean isDownPressed = false;
     private boolean isLeftPressed = false;
@@ -149,16 +157,17 @@ public class Player extends CharacterController {
 
     @Override
     public void drawHealthBar(Graphics g, Character c) {
-        int hbWidth = 250;
-        int hbHeight = 30;
-        int hbX = 10;
-        int hbY = 10;
-
-        int margin = 3;
-
         int height = Game.getInstance().getHeight();
-        int hbRealY = height - hbY - hbHeight;
+        int hbRealY = height - HEALTHBAR_Y - BARS_HEIGHT;
 
-        drawHealthBarReal(g, hbWidth, hbHeight, hbX, hbRealY, margin, c.getHealth() / 100.);
+        drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, BARS_X, hbRealY, BARS_MARGIN, c.getHealth() / 100., Color.RED);
+    }
+
+    @Override
+    public void drawManaBar(Graphics g, Character c) {
+        int height = Game.getInstance().getHeight();
+        int hbRealY = height - MANABAR_Y - BARS_HEIGHT;
+
+        drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, BARS_X, hbRealY, BARS_MARGIN, c.getMana() / 100., Color.BLUE);
     }
 }

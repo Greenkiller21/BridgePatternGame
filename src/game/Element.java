@@ -2,5 +2,6 @@ package game;
 
 public enum Element {
     Ice,
-    Earth
+    Earth,
+    Wood
 }

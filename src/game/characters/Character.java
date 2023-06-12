@@ -15,20 +15,19 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Character extends MovableGameObject implements IDamageable {
-    private int firstAttackCooldownStatus = 0;
-    private int secondAttackCooldownStatus = 0;
-    protected int health = 100;
+    private static final int COOLDOWN_MANA_REGEN = 60;
+    private int cooldownManaRegen = COOLDOWN_MANA_REGEN;
+    private int mana = 100;
+    private int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
     private int renderDirection;
+    private Image[] images;
 
     public Character(double x, double y, Mechanic mechanic) {
         super(x, y);
         this.mechanic = mechanic;
         renderDirection = 2;
-
-        firstAttackCooldownStatus = mechanic.firstAttackCooldown();
-        secondAttackCooldownStatus = mechanic.secondAttackCooldown();
 
         updateBounds();
     }
@@ -60,6 +59,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
 
         //Healthbar
         controller.drawHealthBar(g, this);
+        controller.drawManaBar(g, this);
     }
 
     private void updateBounds() {
@@ -128,22 +128,26 @@ public abstract class Character extends MovableGameObject implements IDamageable
         velY = getSpeed() * velocities.y;
 
         boolean attackLaunched = false;
-        ++firstAttackCooldownStatus;
-        ++secondAttackCooldownStatus;
 
-        if (firstAttackCooldownStatus >= mechanic.firstAttackCooldown()) {
+        ++cooldownManaRegen;
+        if (cooldownManaRegen >= COOLDOWN_MANA_REGEN) {
+            cooldownManaRegen = 0;
+            mana = Math.min(100, mana + 10);
+        }
+
+        if (mana >= mechanic.firstAttackManaCost()) {
             Point2D.Double firstAttackVector = controller.getFirstAttackVector(getX(), getY());
             if (firstAttackVector != null) {
-                firstAttackCooldownStatus = 0;
+                mana -= mechanic.firstAttackManaCost();
                 attackLaunched = true;
                 mechanic.createFirstAttack(this, firstAttackVector);
             }
         }
 
-        if (!attackLaunched && secondAttackCooldownStatus >= mechanic.secondAttackCooldown()) {
+        if (!attackLaunched && mana >= mechanic.secondAttackManaCost()) {
             Point2D.Double secondAttackVector = controller.getSecondAttackVector(getX(), getY());
             if (secondAttackVector != null) {
-                secondAttackCooldownStatus = 0;
+                mana -= mechanic.secondAttackManaCost();
                 mechanic.createSecondAttack(this, secondAttackVector);
             }
         }
@@ -174,6 +178,11 @@ public abstract class Character extends MovableGameObject implements IDamageable
     }
 
     @Override
+    public void heal(int amount) {
+        health = Math.min(100, health + amount);
+    }
+
+    @Override
     public int getHealth() {
         return health;
     }
@@ -183,7 +192,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
         return GameObjectType.Character;
     }
 
-    protected static Image[] loadImages(Class<? extends Character> clazz) {
+    private static Image[] loadImages(Class<? extends Character> clazz) {
         Image[] images = new Image[4];
         images[0] = ImageLoader.getImage("w", clazz);
         images[1] = ImageLoader.getImage("a", clazz);
@@ -195,7 +204,12 @@ public abstract class Character extends MovableGameObject implements IDamageable
     /**
      * Images of the character (W, A, S, D)
      */
-    protected abstract Image[] getImages();
+    protected Image[] getImages() {
+        if (images == null) {
+            images = loadImages(this.getClass());
+        }
+        return images;
+    }
 
     protected abstract double getSpeed();
 
@@ -206,5 +220,9 @@ public abstract class Character extends MovableGameObject implements IDamageable
             || y <= 0
             || x + bounds.getWidth() >= Game.getInstance().getWidth()
             || y + bounds.getHeight() >= Game.getInstance().getHeight();
+    }
+
+    public int getMana() {
+        return mana;
     }
 }

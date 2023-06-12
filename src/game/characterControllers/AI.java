@@ -10,6 +10,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class AI extends CharacterController {
+    private static final int BARS_WIDTH = 50;
+    private static final int BARS_HEIGHT = 6;
+    private static final int BARS_MARGIN = 1;
+
+    private static final int MANABAR_Y = -5;
+    private static final int HEALTHBAR_Y = MANABAR_Y - BARS_HEIGHT - 1;
+
     private boolean isFirstAttackNext = Utils.getRandom().nextBoolean();
 
     @Override
@@ -54,16 +61,22 @@ public class AI extends CharacterController {
 
     @Override
     public void drawHealthBar(Graphics g, Character c) {
-        int hbWidth = 50;
-        int hbHeight = 6;
         int hbX = (int)c.getX();
         int hbY = (int)c.getY();
 
-        int margin = 1;
+        int xCharacterCenter = (int)(c.getCollider().width / 2);
+
+        drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, hbX + xCharacterCenter - (BARS_WIDTH / 2), hbY + HEALTHBAR_Y, BARS_MARGIN, c.getHealth() / 100., Color.RED);
+    }
+
+    @Override
+    public void drawManaBar(Graphics g, Character c) {
+        int hbX = (int)c.getX();
+        int hbY = (int)c.getY();
 
         int xCharacterCenter = (int)(c.getCollider().width / 2);
 
-        drawHealthBarReal(g, hbWidth, hbHeight, hbX + xCharacterCenter - (hbWidth / 2), hbY, margin, c.getHealth() / 100.);
+        drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, hbX + xCharacterCenter - (BARS_WIDTH / 2), hbY + MANABAR_Y, BARS_MARGIN, c.getMana() / 100., Color.BLUE);
     }
 
     @Override

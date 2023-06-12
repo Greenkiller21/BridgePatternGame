@@ -1,10 +1,9 @@
 package game;
 
-import game.characters.Elf;
-import game.characters.Orc;
+import game.characters.Character;
 import game.gameObjects.Background;
-import game.mechanics.magicMechanics.IceMagicMechanic;
-import game.mechanics.physicalMechanics.SlingshotMechanic;
+import game.mechanics.Mechanic;
+import game.projectiles.leech.Leech;
 import game.projectiles.snowball.Snowball;
 import game.projectiles.stone.Stone;
 import utils.ImageLoader;
@@ -27,11 +26,13 @@ public class Main {
     }
 
     private static void addAllAliases() {
-        addMovementAliases(Elf.class);
-        addMovementAliases(Orc.class);
+        for (Class<? extends Character> c : GameHandler.getCharacters().keySet()) {
+            addMovementAliases(c);
+        }
 
-        addMovementAndImageAliases(SlingshotMechanic.class);
-        addMovementAndImageAliases(IceMagicMechanic.class);
+        for (Mechanic m : GameHandler.getMechanics()) {
+            addMovementAndImageAliases(m.getClass());
+        }
 
         addAlias("grass_2_stalks", Background.class);
         addAlias("grass_3_stalks", Background.class);
@@ -39,6 +40,7 @@ public class Main {
 
         addBigAndSmallAliases(Snowball.class);
         addBigAndSmallAliases(Stone.class);
+        addAlias("normal", Leech.class);
     }
 
     private static void addMovementAliases(Class<?> clazz) {

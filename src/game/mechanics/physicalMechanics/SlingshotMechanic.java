@@ -6,7 +6,6 @@ import game.projectiles.stone.BigStone;
 import game.projectiles.stone.SmallStone;
 import game.screens.Game;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class SlingshotMechanic extends PhysicalMechanic {
@@ -16,8 +15,6 @@ public class SlingshotMechanic extends PhysicalMechanic {
     }
 
     protected SlingshotMechanic() {}
-
-    private static final Image[] images = loadImages(SlingshotMechanic.class);
 
     @Override
     public void createFirstAttack(GameObject creator, Point2D.Double dirVect) {
@@ -32,17 +29,12 @@ public class SlingshotMechanic extends PhysicalMechanic {
     }
 
     @Override
-    public int firstAttackCooldown() {
-        return 60;
+    public int firstAttackManaCost() {
+        return 35;
     }
 
     @Override
-    public int secondAttackCooldown() {
-        return 40;
-    }
-
-    @Override
-    protected Image[] getImages() {
-        return images;
+    public int secondAttackManaCost() {
+        return 20;
     }
 }
