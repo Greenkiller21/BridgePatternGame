@@ -25,22 +25,25 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     private int currentFps = 0;
     private Runnable whenFinished;
+    private CharacterConstructor playerCreator;
+    private int currentStage;
 
     private Game() { }
 
     public void beginGame(CharacterConstructor playerCreator) {
-        handler.reset();
+        this.playerCreator = playerCreator;
 
+        currentStage = 1;
+        beginStage();
+    }
+
+    private void addPlayer() {
         Character playerCharacter = playerCreator.apply(getWidth() / 2., getHeight() / 2., IceMagicMechanic.getInstance());
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
-
-        generateEnemies(5);
-
-        start();
     }
 
-    private void generateEnemies(int number) {
+    private void addEnemies(int number) {
         int screenWidth = Game.getInstance().getWidth();
         int screenHeight = Game.getInstance().getHeight();
 
@@ -66,7 +69,7 @@ public class Game extends Canvas implements Runnable {
             }
 
             if (!ok) {
-                number--;
+                i--;
                 continue;
             }
 
@@ -204,5 +207,19 @@ public class Game extends Canvas implements Runnable {
             instance = new Game();
         }
         return instance;
+    }
+
+    public void nextStage() {
+        ++currentStage;
+        beginStage();
+    }
+
+    private void beginStage() {
+        handler.reset();
+
+        addEnemies(currentStage * 2);
+        addPlayer();
+
+        start();
     }
 }

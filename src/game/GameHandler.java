@@ -73,7 +73,7 @@ public class GameHandler {
 
             g.setColor(Color.BLACK);
             String str = String.valueOf((i + 1) % 10);
-            g.drawString(str, newCX + 2, newCY - 1 + Utils.getStringHeight(g, str));
+            g.drawString(str, newCX + 2, newCY + Utils.getStringHeight(g, str));
         }
 
         g.setFont(oldFont);

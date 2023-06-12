@@ -29,8 +29,11 @@ public class Background implements IRenderable {
         weights.add(new Utils.Pair<>("grass_3_stalks", 35));
         weights.add(new Utils.Pair<>("grass_2_stones", 5));
 
-        for (int iX = 0; iX < screenWidth / tileWidth; ++iX) {
-            for (int iY = 0; iY < screenHeight / tileHeight; ++iY) {
+        int nbTilesX = (screenWidth / tileWidth) + 1;
+        int nbTilesY = (screenHeight / tileHeight) + 1;
+
+        for (int iX = 0; iX < nbTilesX; ++iX) {
+            for (int iY = 0; iY < nbTilesY; ++iY) {
                 String imgName = Utils.getWeightedRandom(weights);
                 g2d.drawImage(ImageLoader.getImage(imgName, Background.class), iX * tileWidth, iY * tileHeight, null);
             }

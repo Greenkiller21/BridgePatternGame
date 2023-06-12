@@ -16,6 +16,7 @@ import java.io.IOException;
 public class MasterWindow extends JFrame {
     private static MasterWindow instance;
     private Component screen;
+
     public static MasterWindow getInstance() {
         if (instance == null) {
             instance = new MasterWindow();
@@ -30,8 +31,7 @@ public class MasterWindow extends JFrame {
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }
-        GraphicsEnvironment ge =
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         ge.registerFont(font);
     }
 
@@ -51,6 +51,12 @@ public class MasterWindow extends JFrame {
         Game game = Game.getInstance();
         changeScreen(game);
         game.beginGame(playerCreator);
+    }
+
+    public void nextStage() {
+        Game game = Game.getInstance();
+        changeScreen(game);
+        game.nextStage();
     }
 
     private void changeScreen(Component newScreen) {

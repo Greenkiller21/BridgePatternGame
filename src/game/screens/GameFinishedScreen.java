@@ -15,11 +15,22 @@ public class GameFinishedScreen extends JPanel {
         add(Box.createVerticalGlue());
 
         JLabel text = new JLabel();
-        text.setText(won ? "You won !" : "Game over !");
+        text.setText(won ? "Stage cleared !" : "Game over !");
         text.setFont(new Font(Utils.FONT_NAME, Font.BOLD, 40));
         text.setForeground(won ? Color.GREEN : Color.RED);
         text.setAlignmentX(CENTER_ALIGNMENT);
         add(text);
+
+        if (won) {
+            JButton btnHome = new JButton();
+            btnHome.addActionListener(e -> MasterWindow.getInstance().nextStage());
+            btnHome.setFont(new Font(Utils.FONT_NAME, Font.PLAIN, 20));
+            btnHome.setText("Next stage");
+            btnHome.setAlignmentX(CENTER_ALIGNMENT);
+            add(btnHome);
+
+            add(Box.createRigidArea(new Dimension(0, 5)));
+        }
 
         JButton btnHome = new JButton();
         btnHome.addActionListener(e -> MasterWindow.getInstance().goToHomeScreen());
