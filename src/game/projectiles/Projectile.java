@@ -38,7 +38,7 @@ public abstract class Projectile extends MovableGameObject {
             case Character -> {
                 Character character = (Character) other;
                 if (creator != character) {
-                    character.damageWith(this);
+                    doActionOnCollide(creator, character);
                     destroy();
                 }
             }
@@ -80,4 +80,8 @@ public abstract class Projectile extends MovableGameObject {
     protected abstract Image getImage();
 
     public abstract Element getProjectileElement();
+
+    public void doActionOnCollide(GameObject creator, Character collide) {
+        collide.damageWith(this);
+    }
 }

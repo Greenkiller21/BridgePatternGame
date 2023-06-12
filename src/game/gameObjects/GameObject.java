@@ -41,4 +41,25 @@ public abstract class GameObject implements IRenderable, ITickable, ICollidable 
     }
 
     public abstract GameObjectType getType();
+
+    public boolean isOutOfBounds(double x, double y) {
+        return x <= 0
+                || y <= 0
+                || x + bounds.getWidth() >= Game.getInstance().getWidth()
+                || y + bounds.getHeight() >= Game.getInstance().getHeight();
+    }
+
+    public boolean isGeneratedPositionValid() {
+        if (isOutOfBounds(getX(), getY())) {
+            return false;
+        } else {
+            for (GameObject o : Game.getInstance().getGameHandler().getGameObjects()) {
+                if (getCollider().intersects(o.getCollider())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

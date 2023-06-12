@@ -21,7 +21,7 @@ public abstract class Mechanic {
     /**
      * Images of the character (W, A, S, D, Representation)
      */
-    protected Image[] getImages() {
+    private Image[] getImages() {
         if (images == null) {
             images = loadImages(this.getClass());
         }

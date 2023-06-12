@@ -1,8 +1,9 @@
 package game.characters;
 
 import game.Element;
+import game.interfaces.IMana;
 import utils.ImageLoader;
-import game.interfaces.IDamageable;
+import game.interfaces.IHealth;
 import game.characterControllers.CharacterController;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
@@ -14,7 +15,7 @@ import game.screens.Game;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public abstract class Character extends MovableGameObject implements IDamageable {
+public abstract class Character extends MovableGameObject implements IHealth, IMana {
     private static final int COOLDOWN_MANA_REGEN = 60;
     private int cooldownManaRegen = COOLDOWN_MANA_REGEN;
     private int mana = 100;
@@ -132,13 +133,13 @@ public abstract class Character extends MovableGameObject implements IDamageable
         ++cooldownManaRegen;
         if (cooldownManaRegen >= COOLDOWN_MANA_REGEN) {
             cooldownManaRegen = 0;
-            mana = Math.min(100, mana + 10);
+            addMana(10);
         }
 
         if (mana >= mechanic.firstAttackManaCost()) {
             Point2D.Double firstAttackVector = controller.getFirstAttackVector(getX(), getY());
             if (firstAttackVector != null) {
-                mana -= mechanic.firstAttackManaCost();
+                addMana(-mechanic.firstAttackManaCost());
                 attackLaunched = true;
                 mechanic.createFirstAttack(this, firstAttackVector);
             }
@@ -147,7 +148,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
         if (!attackLaunched && mana >= mechanic.secondAttackManaCost()) {
             Point2D.Double secondAttackVector = controller.getSecondAttackVector(getX(), getY());
             if (secondAttackVector != null) {
-                mana -= mechanic.secondAttackManaCost();
+                addMana(-mechanic.secondAttackManaCost());
                 mechanic.createSecondAttack(this, secondAttackVector);
             }
         }
@@ -167,10 +168,9 @@ public abstract class Character extends MovableGameObject implements IDamageable
         }
     }
 
-    @Override
     public void damageWith(Projectile p) {
-        double multiplier = p.getProjectileElement() == getWeaknessElement() ? 2 : 1;
-        health -= multiplier * p.getDamage();
+        int multiplier = p.getProjectileElement() == getWeaknessElement() ? 2 : 1;
+        addHealth(-multiplier * p.getDamage());
 
         if (health <= 0) {
             destroy();
@@ -178,13 +178,23 @@ public abstract class Character extends MovableGameObject implements IDamageable
     }
 
     @Override
-    public void heal(int amount) {
-        health = Math.min(100, health + amount);
+    public void addHealth(int amount) {
+        health = Math.max(0, Math.min(100, health + amount));
     }
 
     @Override
     public int getHealth() {
         return health;
+    }
+
+    @Override
+    public void addMana(int amount) {
+        mana = Math.max(0, Math.min(100, mana + amount));
+    }
+
+    @Override
+    public int getMana() {
+        return mana;
     }
 
     @Override
@@ -204,7 +214,7 @@ public abstract class Character extends MovableGameObject implements IDamageable
     /**
      * Images of the character (W, A, S, D)
      */
-    protected Image[] getImages() {
+    private Image[] getImages() {
         if (images == null) {
             images = loadImages(this.getClass());
         }
@@ -214,15 +224,4 @@ public abstract class Character extends MovableGameObject implements IDamageable
     protected abstract double getSpeed();
 
     protected abstract Element getWeaknessElement();
-
-    public boolean isOutOfBounds(double x, double y) {
-        return x <= 0
-            || y <= 0
-            || x + bounds.getWidth() >= Game.getInstance().getWidth()
-            || y + bounds.getHeight() >= Game.getInstance().getHeight();
-    }
-
-    public int getMana() {
-        return mana;
-    }
 }

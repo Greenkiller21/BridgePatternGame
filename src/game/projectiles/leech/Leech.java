@@ -16,20 +16,6 @@ public class Leech extends Projectile {
     }
 
     @Override
-    public void onCollide(GameObject other) {
-        super.onCollide(other);
-
-        if (other.getType() == GameObjectType.Character) {
-            if (creator.getType() == GameObjectType.Character) {
-                Character go = (Character) creator;
-                if (other != creator) {
-                    go.heal(getDamage() / 5);
-                }
-            }
-        }
-    }
-
-    @Override
     public Element getProjectileElement() {
         return Element.Wood;
     }
@@ -37,5 +23,14 @@ public class Leech extends Projectile {
     @Override
     protected Image getImage() {
         return ImageLoader.getImage("normal", Leech.class);
+    }
+
+    @Override
+    public void doActionOnCollide(GameObject creator, Character collide) {
+        if (creator.getType() == GameObjectType.Character) {
+            Character creatorCharacter = (Character)creator;
+            creatorCharacter.addHealth(getDamage() / 5);
+            super.doActionOnCollide(creator, collide);
+        }
     }
 }

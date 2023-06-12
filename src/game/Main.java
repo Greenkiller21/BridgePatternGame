@@ -2,6 +2,7 @@ package game;
 
 import game.characters.Character;
 import game.gameObjects.Background;
+import game.gameObjects.Orb;
 import game.mechanics.Mechanic;
 import game.projectiles.leech.Leech;
 import game.projectiles.snowball.Snowball;
@@ -32,6 +33,10 @@ public class Main {
 
         for (Mechanic m : GameHandler.getMechanics()) {
             addMovementAndImageAliases(m.getClass());
+        }
+
+        for (Class<? extends Orb> o : GameHandler.getOrbs().keySet()) {
+            addAlias(o.getSimpleName().toLowerCase(), Orb.class);
         }
 
         addAlias("grass_2_stalks", Background.class);

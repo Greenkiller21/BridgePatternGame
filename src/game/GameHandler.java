@@ -6,6 +6,9 @@ import game.characters.Orc;
 import game.gameObjects.Background;
 import game.gameObjects.GameObject;
 import game.gameObjects.GameObjectType;
+import game.gameObjects.Orb;
+import game.gameObjects.orbs.HealthOrb;
+import game.gameObjects.orbs.ManaOrb;
 import game.interfaces.IRenderable;
 import game.mechanics.magicMechanics.WoodMagicMechanic;
 import utils.CharacterConstructor;
@@ -13,6 +16,7 @@ import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import game.mechanics.physicalMechanics.SlingshotMechanic;
 import game.screens.Game;
+import utils.OrbConstructor;
 import utils.Utils;
 
 import java.awt.*;
@@ -21,12 +25,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameHandler {
+    private static final int MAX_ORBS = 5;
+    private static final int ORB_SPAWN_COOLDOWN = 180;
+    private int orbSpawnCooldown = 0;
     private final ConcurrentLinkedQueue<GameObject> objects = new ConcurrentLinkedQueue<>();
     private Character player;
     private static final Mechanic[] mechanics = { IceMagicMechanic.getInstance(), SlingshotMechanic.getInstance(), WoodMagicMechanic.getInstance()};
     private static final Map<Class<? extends Character>, CharacterConstructor> characters = new HashMap<>() {{
         put(Elf.class, Elf::new);
         put(Orc.class, Orc::new);
+    }};
+    private static final Map<Class<? extends Orb>, OrbConstructor> orbs = new HashMap<>() {{
+        put(ManaOrb.class, ManaOrb::new);
+        put(HealthOrb.class, HealthOrb::new);
     }};
     private IRenderable background;
 
@@ -101,6 +112,25 @@ public class GameHandler {
         } else if (objects.stream().filter(go -> go.getType() == GameObjectType.Character).toList().size() == 1) {
             Game.getInstance().win();
         }
+
+        ++orbSpawnCooldown;
+        if (orbSpawnCooldown >= ORB_SPAWN_COOLDOWN && Utils.getRandom().nextInt(3) == 0) {
+            orbSpawnCooldown = 0;
+            if (objects.stream().filter(go -> go.getType() == GameObjectType.Orb).count() < MAX_ORBS) {
+                OrbConstructor constructor = GameHandler.getOrbs().values().stream().toList().get(Utils.getRandom().nextInt(0, GameHandler.getOrbs().size()));
+                int screenWidth = Game.getInstance().getWidth();
+                int screenHeight = Game.getInstance().getHeight();
+
+                Orb orb;
+                do {
+                    double x = Utils.getRandom().nextInt(1, screenWidth);
+                    double y = Utils.getRandom().nextInt(1, screenHeight);
+                    orb = constructor.apply(x , y);
+                } while (!orb.isGeneratedPositionValid());
+
+                Game.getInstance().getGameHandler().addGameObject(orb);
+            }
+        }
     }
 
     public void addGameObject(GameObject obj) {
@@ -136,5 +166,9 @@ public class GameHandler {
 
     public static Map<Class<? extends Character>, CharacterConstructor> getCharacters() {
         return characters;
+    }
+
+    public static Map<Class<? extends Orb>, OrbConstructor> getOrbs() {
+        return orbs;
     }
 }

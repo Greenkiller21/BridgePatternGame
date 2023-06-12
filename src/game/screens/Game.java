@@ -51,20 +51,7 @@ public class Game extends Canvas implements Runnable {
             CharacterConstructor characterCreator = GameHandler.getCharacters().values().stream().toList().get(Utils.getRandom().nextInt(0, GameHandler.getCharacters().size()));
             Character c = characterCreator.apply(x, y, randomMechanic);
 
-            boolean ok = true;
-
-            if (c.isOutOfBounds(c.getX(), c.getY())) {
-                ok = false;
-            } else {
-                for (GameObject o : getGameHandler().getGameObjects()) {
-                    if (c.getCollider().intersects(o.getCollider())) {
-                        ok = false;
-                        break;
-                    }
-                }
-            }
-
-            if (!ok) {
+            if (!c.isGeneratedPositionValid()) {
                 i--;
                 continue;
             }

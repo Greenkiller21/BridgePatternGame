@@ -27,7 +27,7 @@ public class WoodMagicMechanic extends MagicMechanic {
     public void createSecondAttack(GameObject creator, Point2D.Double dirVect) {
         if (creator.getType() == GameObjectType.Character) {
             Character go = (Character) creator;
-            go.heal(25);
+            go.addHealth(25);
         }
     }
 

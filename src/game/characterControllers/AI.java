@@ -10,6 +10,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class AI extends CharacterController {
+    private static final int ATTACK_COOLDOWN = 60;
+    private int attackCooldown = ATTACK_COOLDOWN;
+
     private static final int BARS_WIDTH = 50;
     private static final int BARS_HEIGHT = 6;
     private static final int BARS_MARGIN = 1;
@@ -45,6 +48,11 @@ public class AI extends CharacterController {
     }
 
     private Point2D.Double getAttackVector(double x, double y) {
+        ++attackCooldown;
+        if (attackCooldown < ATTACK_COOLDOWN) {
+            return null;
+        }
+
         Character player = Game.getInstance().getGameHandler().getPlayer();
 
         Rectangle2D.Double playerCollider = player.getCollider();
@@ -53,6 +61,8 @@ public class AI extends CharacterController {
         if (distToPlayer >= 200) {
             return null;
         }
+
+        attackCooldown = 0;
 
         Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
         isFirstAttackNext = Utils.getRandom().nextBoolean();
