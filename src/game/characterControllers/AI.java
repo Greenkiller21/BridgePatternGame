@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class AI extends CharacterController {
-    private boolean isBigAttackNext = Utils.getRandom().nextBoolean();
+    private boolean isFirstAttackNext = Utils.getRandom().nextBoolean();
 
     @Override
     public Point2D.Double getVelocities(Character current) {
@@ -28,13 +28,13 @@ public class AI extends CharacterController {
     }
 
     @Override
-    public Point2D.Double getBigAttackVector(double x, double y) {
-        return isBigAttackNext ? getAttackVector(x, y) : null;
+    public Point2D.Double getFirstAttackVector(double x, double y) {
+        return isFirstAttackNext ? getAttackVector(x, y) : null;
     }
 
     @Override
-    public Point2D.Double getSmallAttackVector(double x, double y) {
-        return !isBigAttackNext ? getAttackVector(x, y) : null;
+    public Point2D.Double getSecondAttackVector(double x, double y) {
+        return !isFirstAttackNext ? getAttackVector(x, y) : null;
     }
 
     private Point2D.Double getAttackVector(double x, double y) {
@@ -48,7 +48,7 @@ public class AI extends CharacterController {
         }
 
         Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
-        isBigAttackNext = Utils.getRandom().nextBoolean();
+        isFirstAttackNext = Utils.getRandom().nextBoolean();
         return Utils.normalize(p);
     }
 

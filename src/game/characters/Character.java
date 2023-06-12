@@ -15,8 +15,8 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Character extends MovableGameObject implements IDamageable {
-    private final static int COOLDOWN_TICK = 60;
-    private int cooldownStatus = COOLDOWN_TICK;
+    private int firstAttackCooldownStatus = 0;
+    private int secondAttackCooldownStatus = 0;
     protected int health = 100;
     protected CharacterController controller;
     protected Mechanic mechanic;
@@ -26,6 +26,9 @@ public abstract class Character extends MovableGameObject implements IDamageable
         super(x, y);
         this.mechanic = mechanic;
         renderDirection = 2;
+
+        firstAttackCooldownStatus = mechanic.firstAttackCooldown();
+        secondAttackCooldownStatus = mechanic.secondAttackCooldown();
 
         updateBounds();
     }
@@ -124,18 +127,24 @@ public abstract class Character extends MovableGameObject implements IDamageable
         velX = getSpeed() * velocities.x;
         velY = getSpeed() * velocities.y;
 
-        ++cooldownStatus;
-        if (cooldownStatus >= COOLDOWN_TICK) {
-            Point2D.Double bigAttackVector = controller.getBigAttackVector(getX(), getY());
-            if (bigAttackVector != null) {
-                cooldownStatus = 0;
-                mechanic.createBigAttack(this, bigAttackVector);
-            } else {
-                Point2D.Double smallAttackVector = controller.getSmallAttackVector(getX(), getY());
-                if (smallAttackVector != null) {
-                    cooldownStatus = 0;
-                    mechanic.createSmallAttack(this, smallAttackVector);
-                }
+        boolean attackLaunched = false;
+        ++firstAttackCooldownStatus;
+        ++secondAttackCooldownStatus;
+
+        if (firstAttackCooldownStatus >= mechanic.firstAttackCooldown()) {
+            Point2D.Double firstAttackVector = controller.getFirstAttackVector(getX(), getY());
+            if (firstAttackVector != null) {
+                firstAttackCooldownStatus = 0;
+                attackLaunched = true;
+                mechanic.createFirstAttack(this, firstAttackVector);
+            }
+        }
+
+        if (!attackLaunched && secondAttackCooldownStatus >= mechanic.secondAttackCooldown()) {
+            Point2D.Double secondAttackVector = controller.getSecondAttackVector(getX(), getY());
+            if (secondAttackVector != null) {
+                secondAttackCooldownStatus = 0;
+                mechanic.createSecondAttack(this, secondAttackVector);
             }
         }
 

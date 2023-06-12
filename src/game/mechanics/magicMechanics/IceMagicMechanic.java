@@ -20,15 +20,25 @@ public class IceMagicMechanic extends MagicMechanic {
     private static final Image[] images = loadImages(IceMagicMechanic.class);
 
     @Override
-    public void createBigAttack(GameObject creator, Point2D.Double dirVect) {
+    public void createFirstAttack(GameObject creator, Point2D.Double dirVect) {
         Projectile p = new BigSnowball(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
     }
 
     @Override
-    public void createSmallAttack(GameObject creator, Point2D.Double dirVect) {
+    public void createSecondAttack(GameObject creator, Point2D.Double dirVect) {
         Projectile p = new SmallSnowball(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
+    }
+
+    @Override
+    public int firstAttackCooldown() {
+        return 60;
+    }
+
+    @Override
+    public int secondAttackCooldown() {
+        return 50;
     }
 
     @Override

@@ -8,8 +8,8 @@ import java.awt.geom.Point2D;
 
 public abstract class CharacterController {
     public abstract Point2D.Double getVelocities(Character current);
-    public abstract Point2D.Double getBigAttackVector(double x, double y);
-    public abstract Point2D.Double getSmallAttackVector(double x, double y);
+    public abstract Point2D.Double getFirstAttackVector(double x, double y);
+    public abstract Point2D.Double getSecondAttackVector(double x, double y);
     public abstract void drawHealthBar(Graphics g, Character c);
     public abstract Mechanic getMechanic();
     protected void drawHealthBarReal(Graphics g, int hbWidth, int hbHeight, int hbX, int hbY, int margin, double currentHealthPercentage) {

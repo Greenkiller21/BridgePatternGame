@@ -51,11 +51,13 @@ public class GameHandler {
         Font oldFont = g.getFont();
         g.setFont(new Font(Utils.FONT_NAME, Font.BOLD, 15));
 
+        Character player = Game.getInstance().getGameHandler().getPlayer();
+
         for (int i = 0; i < mechanics.length; ++i) {
             int cX = x + startX + i * (mecWidth + mecSpacing);
             int cY = y + startY;
 
-            if (Game.getInstance().getGameHandler().getPlayer().getMechanic() == mechanics[i]) {
+            if (player.getMechanic() == mechanics[i]) {
                 g.setColor(Color.YELLOW);
                 g.fillRect(cX, cY, mecWidth, mecHeight);
             }

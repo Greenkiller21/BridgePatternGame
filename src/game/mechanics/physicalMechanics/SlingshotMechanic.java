@@ -20,15 +20,25 @@ public class SlingshotMechanic extends PhysicalMechanic {
     private static final Image[] images = loadImages(SlingshotMechanic.class);
 
     @Override
-    public void createBigAttack(GameObject creator, Point2D.Double dirVect) {
+    public void createFirstAttack(GameObject creator, Point2D.Double dirVect) {
         Projectile p = new BigStone(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
     }
 
     @Override
-    public void createSmallAttack(GameObject creator, Point2D.Double dirVect) {
+    public void createSecondAttack(GameObject creator, Point2D.Double dirVect) {
         Projectile p = new SmallStone(creator.getX(), creator.getY(), dirVect, creator);
         Game.getInstance().getGameHandler().addGameObject(p);
+    }
+
+    @Override
+    public int firstAttackCooldown() {
+        return 60;
+    }
+
+    @Override
+    public int secondAttackCooldown() {
+        return 40;
     }
 
     @Override

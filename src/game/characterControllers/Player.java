@@ -127,13 +127,13 @@ public class Player extends CharacterController {
         return null;
     }
 
-    public Point2D.Double getBigAttackVector(double x, double y) {
+    public Point2D.Double getFirstAttackVector(double x, double y) {
         Point2D.Double vector = getAttackVector(x, y, leftClickLocation);
         leftClickLocation = null;
         return vector;
     }
 
-    public Point2D.Double getSmallAttackVector(double x, double y) {
+    public Point2D.Double getSecondAttackVector(double x, double y) {
         Point2D.Double vector = getAttackVector(x, y, rightClickLocation);
         rightClickLocation = null;
         return vector;

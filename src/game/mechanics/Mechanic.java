@@ -7,8 +7,10 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public abstract class Mechanic {
-    public abstract void createBigAttack(GameObject creator, Point2D.Double dirVect);
-    public abstract void createSmallAttack(GameObject creator, Point2D.Double dirVect);
+    public abstract void createFirstAttack(GameObject creator, Point2D.Double dirVect);
+    public abstract void createSecondAttack(GameObject creator, Point2D.Double dirVect);
+    public abstract int firstAttackCooldown();
+    public abstract int secondAttackCooldown();
 
     public Image getImage(int direction) {
         return getImages()[direction];
