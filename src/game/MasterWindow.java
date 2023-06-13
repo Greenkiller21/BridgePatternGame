@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MasterWindow extends JFrame {
     private static MasterWindow instance;
@@ -24,7 +25,7 @@ public class MasterWindow extends JFrame {
     private MasterWindow() {
         Font font;
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/fonts/blomberg.otf"));
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Main.class.getResourceAsStream("/assets/fonts/blomberg.otf")));
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }

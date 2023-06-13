@@ -1,5 +1,7 @@
 package utils;
 
+import game.Main;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -18,7 +20,7 @@ public class ImageLoader {
 
         public void loadAsset(String alias, String path) {
             try {
-                Image img = ImageIO.read(new File("assets/" + path));
+                Image img = ImageIO.read(Objects.requireNonNull(Main.class.getResourceAsStream("/assets/" + path)));
                 images.put(alias, img);
             } catch (IOException e) {
                 throw new RuntimeException(e);

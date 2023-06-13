@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="BridgeGame:jar">
+    <output-path>$PROJECT_DIR$/out/production/BridgeGame</output-path>
+    <root id="archive" name="BridgeGame.jar">
+      <element id="module-output" name="BridgeGame" />
+      <element id="directory" name="META-INF">
+        <element id="dir-copy" path="$PROJECT_DIR$/META-INF" />
+      </element>
+      <element id="directory" name="assets">
+        <element id="dir-copy" path="$PROJECT_DIR$/assets" />
+      </element>
+    </root>
+  </artifact>
+</component>
