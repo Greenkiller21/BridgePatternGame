@@ -119,12 +119,14 @@ public abstract class Character extends MovableGameObject implements IHealth, IM
 
     @Override
     public void tick() {
+        controller.tick(this);
+
         Mechanic newMechanic = controller.getMechanic();
         if (newMechanic != null) {
             setMechanic(newMechanic);
         }
 
-        Point2D.Double velocities = controller.getVelocities(this);
+        Point2D.Double velocities = controller.getVelocities();
         velX = getSpeed() * velocities.x;
         velY = getSpeed() * velocities.y;
 
@@ -137,7 +139,7 @@ public abstract class Character extends MovableGameObject implements IHealth, IM
         }
 
         if (mana >= mechanic.firstAttackManaCost()) {
-            Point2D.Double firstAttackVector = controller.getFirstAttackVector(getX(), getY());
+            Point2D.Double firstAttackVector = controller.getFirstAttackVector();
             if (firstAttackVector != null) {
                 addMana(-mechanic.firstAttackManaCost());
                 attackLaunched = true;
@@ -146,7 +148,7 @@ public abstract class Character extends MovableGameObject implements IHealth, IM
         }
 
         if (!attackLaunched && mana >= mechanic.secondAttackManaCost()) {
-            Point2D.Double secondAttackVector = controller.getSecondAttackVector(getX(), getY());
+            Point2D.Double secondAttackVector = controller.getSecondAttackVector();
             if (secondAttackVector != null) {
                 addMana(-mechanic.secondAttackManaCost());
                 mechanic.createSecondAttack(this, secondAttackVector);

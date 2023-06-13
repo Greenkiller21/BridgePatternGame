@@ -1,5 +1,7 @@
 package game.characterControllers;
 
+import game.GameHandler;
+import game.mechanics.magicMechanics.WoodMagicMechanic;
 import game.screens.Game;
 import utils.Utils;
 import game.characters.Character;
@@ -20,53 +22,28 @@ public class AI extends CharacterController {
     private static final int MANABAR_Y = -5;
     private static final int HEALTHBAR_Y = MANABAR_Y - BARS_HEIGHT - 1;
 
-    private boolean isFirstAttackNext = Utils.getRandom().nextBoolean();
+    private boolean isFirstAttackNext;
+    private Point2D.Double attackVector;
+    private Point2D.Double velocities;
 
     @Override
-    public Point2D.Double getVelocities(Character current) {
-        Character player = Game.getInstance().getGameHandler().getPlayer();
-        Rectangle2D.Double playerCollider = player.getCollider();
-        Point2D.Double moveLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
-
-        double distToPlayer = moveLocation.distance(new Point2D.Double(current.getX(), current.getY()));
-        if (distToPlayer >= 200 || distToPlayer <= 120) {
-            return new Point2D.Double(0, 0);
-        }
-
-        Point2D.Double p = new Point2D.Double(moveLocation.x - current.getCollider().width / 2 - current.getX(), current.getY() + current.getCollider().height / 2 - moveLocation.y);
-        return Utils.normalize(p);
+    public Point2D.Double getVelocities() {
+        return velocities;
     }
 
     @Override
-    public Point2D.Double getFirstAttackVector(double x, double y) {
-        return isFirstAttackNext ? getAttackVector(x, y) : null;
+    public Mechanic getMechanic() {
+        return null;
     }
 
     @Override
-    public Point2D.Double getSecondAttackVector(double x, double y) {
-        return !isFirstAttackNext ? getAttackVector(x, y) : null;
+    public Point2D.Double getFirstAttackVector() {
+        return isFirstAttackNext ? attackVector : null;
     }
 
-    private Point2D.Double getAttackVector(double x, double y) {
-        ++attackCooldown;
-        if (attackCooldown < ATTACK_COOLDOWN) {
-            return null;
-        }
-
-        Character player = Game.getInstance().getGameHandler().getPlayer();
-
-        Rectangle2D.Double playerCollider = player.getCollider();
-        Point2D.Double aimLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
-        double distToPlayer = aimLocation.distance(new Point2D.Double(x, y));
-        if (distToPlayer >= 200) {
-            return null;
-        }
-
-        attackCooldown = 0;
-
-        Point2D.Double p = new Point2D.Double(aimLocation.x - x, y - aimLocation.y);
-        isFirstAttackNext = Utils.getRandom().nextBoolean();
-        return Utils.normalize(p);
+    @Override
+    public Point2D.Double getSecondAttackVector() {
+        return !isFirstAttackNext ? attackVector : null;
     }
 
     @Override
@@ -89,8 +66,41 @@ public class AI extends CharacterController {
         drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, hbX + xCharacterCenter - (BARS_WIDTH / 2), hbY + MANABAR_Y, BARS_MARGIN, c.getMana() / 100., Color.BLUE);
     }
 
-    @Override
-    public Mechanic getMechanic() {
-        return null;
+    public void tick(Character c) {
+        //Attack vector
+        attackVector = null;
+        ++attackCooldown;
+        if (attackCooldown >= ATTACK_COOLDOWN) {
+            Character player = Game.getInstance().getGameHandler().getPlayer();
+
+            Rectangle2D.Double playerCollider = player.getCollider();
+            Point2D.Double aimLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
+            double distToPlayer = aimLocation.distance(new Point2D.Double(c.getX(), c.getY()));
+            if (distToPlayer < 200) {
+                attackCooldown = 0;
+
+                Point2D.Double p = new Point2D.Double(aimLocation.x - c.getX(), c.getY() - aimLocation.y);
+                isFirstAttackNext = Utils.getRandom().nextBoolean();
+
+                //Avoid AI with WoodMagicMechanic to just wait to have full mana to cast heal while they are at max health
+                if (!isFirstAttackNext && c.getMechanic().getClass() == WoodMagicMechanic.class && c.getHealth() == 100) {
+                    isFirstAttackNext = true;
+                }
+
+                attackVector = Utils.normalize(p);
+            }
+        }
+
+        //Velocities
+        velocities = new Point2D.Double(0, 0);
+        Character player = Game.getInstance().getGameHandler().getPlayer();
+        Rectangle2D.Double playerCollider = player.getCollider();
+        Point2D.Double moveLocation = new Point2D.Double(playerCollider.getCenterX(), playerCollider.getCenterY());
+
+        double distToPlayer = moveLocation.distance(new Point2D.Double(c.getX(), c.getY()));
+        if (distToPlayer > 120 && distToPlayer < 200) {
+            Point2D.Double p = new Point2D.Double(moveLocation.x - c.getCollider().width / 2 - c.getX(), c.getY() + c.getCollider().height / 2 - moveLocation.y);
+            velocities = Utils.normalize(p);
+        }
     }
 }

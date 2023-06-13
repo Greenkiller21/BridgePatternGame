@@ -26,6 +26,10 @@ public class Player extends CharacterController {
     private Point leftClickLocation = null;
     private Point rightClickLocation = null;
     private final boolean[] numbersPressed = new boolean[10];
+    private Point2D.Double firstAttackVector;
+    private Point2D.Double secondAttackVector;
+    private Point2D.Double velocities;
+    private Mechanic mechanic;
 
     private final KeyListener kl = new KeyAdapter() {
         @Override
@@ -95,56 +99,20 @@ public class Player extends CharacterController {
     }
 
     @Override
-    public Point2D.Double getVelocities(Character current) {
-        double velX = 0;
-        double velY = 0;
-
-        if (isUpPressed) {
-            velY = 1;
-        }
-        if (isDownPressed) {
-            velY = -1;
-        }
-        if (isRightPressed) {
-            velX = 1;
-        }
-        if (isLeftPressed) {
-            velX = -1;
-        }
-
-        if (velX != 0 && Math.abs(velX) == Math.abs(velY)) {
-            //sin of 45 -> 1 / sqrt(2) is there to unify the distance travelled in a tick
-            double dist = Math.sin(45);
-            velX = Math.signum(velX) * dist;
-            velY = Math.signum(velY) * dist;
-        }
-
-        return new Point2D.Double(velX, velY);
+    public Point2D.Double getVelocities() {
+        return velocities;
     }
 
     public Mechanic getMechanic() {
-        Mechanic[] mechanics = GameHandler.getMechanics();
-        for (int i = 0; i < 10; ++i) {
-            if (numbersPressed[i]) {
-                if (i <= mechanics.length) {
-                    return mechanics[(i + 9) % 10];
-                }
-            }
-        }
-
-        return null;
+        return mechanic;
     }
 
-    public Point2D.Double getFirstAttackVector(double x, double y) {
-        Point2D.Double vector = getAttackVector(x, y, leftClickLocation);
-        leftClickLocation = null;
-        return vector;
+    public Point2D.Double getFirstAttackVector() {
+        return firstAttackVector;
     }
 
-    public Point2D.Double getSecondAttackVector(double x, double y) {
-        Point2D.Double vector = getAttackVector(x, y, rightClickLocation);
-        rightClickLocation = null;
-        return vector;
+    public Point2D.Double getSecondAttackVector() {
+        return secondAttackVector;
     }
 
     private Point2D.Double getAttackVector(double x, double y, Point clickLocation) {
@@ -169,5 +137,50 @@ public class Player extends CharacterController {
         int hbRealY = height - MANABAR_Y - BARS_HEIGHT;
 
         drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, BARS_X, hbRealY, BARS_MARGIN, c.getMana() / 100., Color.BLUE);
+    }
+
+    @Override
+    public void tick(Character c) {
+        //Attack vectors
+        firstAttackVector = getAttackVector(c.getX(), c.getY(), leftClickLocation);
+        secondAttackVector = getAttackVector(c.getX(), c.getY(), rightClickLocation);
+        leftClickLocation = rightClickLocation = null;
+
+        //Velocities
+        double velX = 0;
+        double velY = 0;
+
+        if (isUpPressed) {
+            velY = 1;
+        }
+        if (isDownPressed) {
+            velY = -1;
+        }
+        if (isRightPressed) {
+            velX = 1;
+        }
+        if (isLeftPressed) {
+            velX = -1;
+        }
+
+        if (velX != 0 && Math.abs(velX) == Math.abs(velY)) {
+            //sin of 45 -> 1 / sqrt(2) is there to unify the distance travelled in a tick
+            double dist = Math.sin(45);
+            velX = Math.signum(velX) * dist;
+            velY = Math.signum(velY) * dist;
+        }
+
+        velocities = new Point2D.Double(velX, velY);
+
+        //Mechanic
+        Mechanic[] mechanics = GameHandler.getMechanics();
+        mechanic = null;
+        for (int i = 0; i < 10; ++i) {
+            if (numbersPressed[i]) {
+                if (i <= mechanics.length) {
+                    mechanic = mechanics[(i + 9) % 10];
+                }
+            }
+        }
     }
 }
