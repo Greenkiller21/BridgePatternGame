@@ -9,6 +9,9 @@ import utils.Utils;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The home screen
+ */
 public class HomeScreen extends JPanel {
     public HomeScreen() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -23,11 +26,13 @@ public class HomeScreen extends JPanel {
 
         add(lblChoice);
 
+        //Contains the buttons to choose a race
         JPanel buttons = new JPanel();
 
         buttons.setBackground(getBackground());
         buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 
+        //For each character class, we add a button
         for (Class<? extends Character> clazz : GameHandler.getCharacters().keySet()) {
             buttons.add(getCharacterButton(clazz));
         }
@@ -38,6 +43,11 @@ public class HomeScreen extends JPanel {
         add(Box.createVerticalGlue());
     }
 
+    /**
+     * Returns a JButton for the specified class
+     * @param clazz The class
+     * @return The JButton
+     */
     private JButton getCharacterButton(Class<? extends Character> clazz) {
         JButton btn = new JButton();
         btn.setIcon(new ImageIcon(ImageLoader.getImage("s", clazz)));

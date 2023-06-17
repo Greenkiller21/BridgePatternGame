@@ -1,8 +1,10 @@
 package game.gameObjects.orbs;
 
 import game.characters.Character;
-import game.gameObjects.Orb;
 
+/**
+ * Class representing a health orb
+ */
 public class HealthOrb extends Orb {
     public HealthOrb(double x, double y) {
         super(x, y);
@@ -10,6 +12,7 @@ public class HealthOrb extends Orb {
 
     @Override
     public void doActionOnCollide(Character c) {
+        //Add 20 HP
         c.addHealth(20);
     }
 }

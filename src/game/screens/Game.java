@@ -5,7 +5,6 @@ import game.MasterWindow;
 import game.characterControllers.AI;
 import game.characterControllers.Player;
 import game.characters.Character;
-import game.gameObjects.GameObject;
 import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.IceMagicMechanic;
 import utils.CharacterConstructor;
@@ -14,18 +13,37 @@ import utils.Utils;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+/**
+ * The game screen
+ */
 public class Game extends Canvas implements Runnable {
     private static Game instance;
     private final GameHandler handler = new GameHandler();
     private boolean isRunning = false;
     private Thread thread;
     private int currentFps = 0;
+
+    /**
+     * The action to run when the game is not running anymore
+     */
     private Runnable whenFinished;
+
+    /**
+     * The constructor to create the player character
+     */
     private CharacterConstructor playerCreator;
+
+    /**
+     * The current stage
+     */
     private int currentStage;
 
     private Game() { }
 
+    /**
+     * Starts the game
+     * @param playerCreator The constructor to create the player character
+     */
     public void beginGame(CharacterConstructor playerCreator) {
         this.playerCreator = playerCreator;
 
@@ -33,12 +51,28 @@ public class Game extends Canvas implements Runnable {
         beginStage();
     }
 
+    /**
+     * Adds the player to the game
+     */
     private void addPlayer() {
-        Character playerCharacter = playerCreator.apply(getWidth() / 2., getHeight() / 2., IceMagicMechanic.getInstance());
+        int screenWidth = Game.getInstance().getWidth();
+        int screenHeight = Game.getInstance().getHeight();
+        Character playerCharacter;
+        do {
+            double x = Utils.getRandom().nextInt(1, screenWidth);
+            double y = Utils.getRandom().nextInt(1, screenHeight);
+
+            playerCharacter = playerCreator.apply(x, y, IceMagicMechanic.getInstance());
+        } while (!playerCharacter.isGeneratedPositionValid());
+
         playerCharacter.setController(new Player());
         handler.addPlayer(playerCharacter);
     }
 
+    /**
+     * Adds multiple enemies to the game
+     * @param number The number of enemies
+     */
     private void addEnemies(int number) {
         int screenWidth = Game.getInstance().getWidth();
         int screenHeight = Game.getInstance().getHeight();
@@ -61,16 +95,25 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * Sets the game as finished and sets whenFinished to go to the game over screen
+     */
     public void gameOver() {
-        isRunning = false;
         whenFinished = () -> MasterWindow.getInstance().goToGameOverScreen();
-    }
-
-    public void win() {
         isRunning = false;
-        whenFinished = () -> MasterWindow.getInstance().goToWinScreen();
     }
 
+    /**
+     * Sets the game as finished and sets whenFinished to go to the win screen
+     */
+    public void win() {
+        whenFinished = () -> MasterWindow.getInstance().goToWinScreen();
+        isRunning = false;
+    }
+
+    /**
+     * Starts the game thread
+     */
     private void start() {
         isRunning = true;
         thread = new Thread(this);
@@ -78,16 +121,21 @@ public class Game extends Canvas implements Runnable {
 
         new Thread(() -> {
             try {
-                thread.join();
+                thread.join(); //Waits for the thread to end
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+            //Runs the whenFinished method if it exists
             if (whenFinished != null) {
                 whenFinished.run();
             }
         }).start();
     }
 
+    /**
+     * Inspired from here : https://gamedev.stackexchange.com/a/154986
+     */
     @Override
     public void run() {
         this.requestFocus();
@@ -97,7 +145,7 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-        int targetFPS = 100; // Desired FPS limit
+        int targetFPS = 100; //FPS limit
         long frameTime = 1000000000 / targetFPS;
 
         while (isRunning) {
@@ -106,7 +154,6 @@ public class Game extends Canvas implements Runnable {
             lastTime = now;
             while (delta >= 1){
                 tick();
-                // updates++;
                 delta--;
             }
             render();
@@ -114,10 +161,8 @@ public class Game extends Canvas implements Runnable {
 
             if (System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
-                // System.out.println(frames + " FPS");
                 currentFps = frames;
                 frames = 0;
-                // updates = 0;
             }
 
             // Limit FPS by introducing a delay
@@ -135,10 +180,16 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * Tick the handler
+     */
     public void tick() {
         handler.tick();
     }
 
+    /**
+     * Rendering
+     */
     public void render() {
         BufferStrategy bs = this.getBufferStrategy();
         if (bs == null) {
@@ -151,15 +202,15 @@ public class Game extends Canvas implements Runnable {
                 Graphics2D g = (Graphics2D)bs.getDrawGraphics();
                 Dimension cs = getSize();
 
-//                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//                g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-//                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-//                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                //Disabled rendering hint because of poor performances
 
+                //g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+                //g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+                //g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+                //Clears all the area
                 g.clearRect(0, 0, cs.width, cs.height);
-
-                //g.setColor(Color.white);
-                //g.fillRect(0, 0, cs.width, cs.height);
 
                 ////
 
@@ -192,11 +243,17 @@ public class Game extends Canvas implements Runnable {
         return instance;
     }
 
+    /**
+     * Go to the next stage
+     */
     public void nextStage() {
         ++currentStage;
         beginStage();
     }
 
+    /**
+     * Starts the stage
+     */
     private void beginStage() {
         handler.reset();
 

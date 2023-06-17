@@ -3,6 +3,9 @@ package game.characters;
 import game.Element;
 import game.mechanics.Mechanic;
 
+/**
+ * Class representing an orc
+ */
 public class Orc extends Character {
     public Orc(double x, double y, Mechanic mechanic) {
         super(x, y, mechanic);

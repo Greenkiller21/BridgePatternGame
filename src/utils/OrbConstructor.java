@@ -1,6 +1,5 @@
 package utils;
 
-import game.gameObjects.Orb;
+import game.gameObjects.orbs.Orb;
 
-public interface OrbConstructor extends TwoParametersFunction<Double, Double, Orb> {
-}
+public interface OrbConstructor extends TwoParametersFunction<Double, Double, Orb> { }

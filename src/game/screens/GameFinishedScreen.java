@@ -6,6 +6,9 @@ import utils.Utils;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Game finished screen (game over + win)
+ */
 public class GameFinishedScreen extends JPanel {
     public GameFinishedScreen(boolean won) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -21,6 +24,7 @@ public class GameFinishedScreen extends JPanel {
         text.setAlignmentX(CENTER_ALIGNMENT);
         add(text);
 
+        //Button to go to the next stage
         if (won) {
             JButton btnHome = new JButton();
             btnHome.addActionListener(e -> MasterWindow.getInstance().nextStage());
@@ -32,6 +36,7 @@ public class GameFinishedScreen extends JPanel {
             add(Box.createRigidArea(new Dimension(0, 5)));
         }
 
+        //Button to go to the home screen
         JButton btnHome = new JButton();
         btnHome.addActionListener(e -> MasterWindow.getInstance().goToHomeScreen());
         btnHome.setFont(new Font(Utils.FONT_NAME, Font.PLAIN, 20));

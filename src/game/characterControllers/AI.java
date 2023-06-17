@@ -1,29 +1,67 @@
 package game.characterControllers;
 
-import game.GameHandler;
+import game.characters.Character;
+import game.mechanics.Mechanic;
 import game.mechanics.magicMechanics.WoodMagicMechanic;
 import game.screens.Game;
 import utils.Utils;
-import game.characters.Character;
-import game.mechanics.Mechanic;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * AI controller
+ */
 public class AI extends CharacterController {
+    /**
+     * The attack cooldown in ticks
+     */
     private static final int ATTACK_COOLDOWN = 60;
+
+    /**
+     * The current attack cooldown
+     */
     private int attackCooldown = ATTACK_COOLDOWN;
 
+    /**
+     * The width of the progress bars
+     */
     private static final int BARS_WIDTH = 50;
+
+    /**
+     * The height of the progress bars
+     */
     private static final int BARS_HEIGHT = 6;
+
+    /**
+     * The border of the progress bars
+     */
     private static final int BARS_MARGIN = 1;
 
+    /**
+     * The mana bar y coord
+     */
     private static final int MANABAR_Y = -5;
+
+    /**
+     * The health bar y coord
+     */
     private static final int HEALTHBAR_Y = MANABAR_Y - BARS_HEIGHT - 1;
 
+    /**
+     * Whether a first attack is next
+     */
     private boolean isFirstAttackNext;
+
+    /**
+     * The attack vector
+     */
     private Point2D.Double attackVector;
+
+    /**
+     * The velocities
+     */
     private Point2D.Double velocities;
 
     @Override
@@ -33,7 +71,7 @@ public class AI extends CharacterController {
 
     @Override
     public Mechanic getMechanic() {
-        return null;
+        return null; //The AI never changes its mechanic
     }
 
     @Override
@@ -66,6 +104,7 @@ public class AI extends CharacterController {
         drawProgressBar(g, BARS_WIDTH, BARS_HEIGHT, hbX + xCharacterCenter - (BARS_WIDTH / 2), hbY + MANABAR_Y, BARS_MARGIN, c.getMana() / 100., Color.BLUE);
     }
 
+    @Override
     public void tick(Character c) {
         //Attack vector
         attackVector = null;

@@ -6,6 +6,9 @@ import game.gameObjects.GameObject;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Class representing a big snowball projectile
+ */
 public class BigSnowball extends Snowball {
     public BigSnowball(double x, double y, Point2D.Double dirVect, GameObject creator) {
         super(x, y, dirVect, creator);

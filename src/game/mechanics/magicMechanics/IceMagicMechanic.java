@@ -8,6 +8,9 @@ import game.screens.Game;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Class representing an ice magic mechanic
+ */
 public class IceMagicMechanic extends MagicMechanic {
     private static final IceMagicMechanic instance = new IceMagicMechanic();
     public static IceMagicMechanic getInstance() {

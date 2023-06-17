@@ -10,27 +10,98 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Player controller
+ */
 public class Player extends CharacterController {
+    /**
+     * The x coord start of the progress bars
+     */
     private static final int BARS_X = 10;
+
+    /**
+     * The width of the progress bars
+     */
     private static final int BARS_WIDTH = 250;
+
+    /**
+     * The height of the progress bars
+     */
     private static final int BARS_HEIGHT = 30;
+
+    /**
+     * The border of the progress bars
+     */
     private static final int BARS_MARGIN = 3;
 
+    /**
+     * The y coord for the mana bar
+     */
     private static final int MANABAR_Y = 10;
+
+    /**
+     * The y coord for the health bar
+     */
     private static final int HEALTHBAR_Y = MANABAR_Y + BARS_HEIGHT + 1;
 
+    /**
+     * Whether the up button (W) is pressed
+     */
     private boolean isUpPressed = false;
+
+    /**
+     * Whether the down button (S) is pressed
+     */
     private boolean isDownPressed = false;
+
+    /**
+     * Whether the left button (A) is pressed
+     */
     private boolean isLeftPressed = false;
+
+    /**
+     * Whether the right button (D) is pressed
+     */
     private boolean isRightPressed = false;
+
+    /**
+     * The left click location
+     */
     private Point leftClickLocation = null;
+
+    /**
+     * The right click location
+     */
     private Point rightClickLocation = null;
+
+    /**
+     * Whether the number at index is pressed
+     */
     private final boolean[] numbersPressed = new boolean[10];
+
+    /**
+     * The first attack vector
+     */
     private Point2D.Double firstAttackVector;
+
+    /**
+     * The second attack vector
+     */
     private Point2D.Double secondAttackVector;
+
+    /**
+     * The velocities
+     */
     private Point2D.Double velocities;
+
+    /**
+     * The mechanic
+     */
     private Mechanic mechanic;
 
+    /**
+     * The key listener
+     */
     private final KeyListener kl = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -44,6 +115,11 @@ public class Player extends CharacterController {
             super.keyReleased(e);
         }
 
+        /**
+         * Handles a key pressed / released event
+         * @param e The key event
+         * @param newValue True if pressed / False if released
+         */
         private void handle(KeyEvent e, boolean newValue) {
             int kc = e.getKeyCode();
             switch (kc) {
@@ -59,6 +135,9 @@ public class Player extends CharacterController {
         }
     };
 
+    /**
+     * The mouse listener
+     */
     private final MouseListener ml = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
@@ -72,16 +151,30 @@ public class Player extends CharacterController {
             super.mouseReleased(e);
         }
 
+        /**
+         * Handles a mouse pressed / released event
+         * @param e The mouse event
+         * @param newValue True if pressed / False if released
+         */
         private void handle(MouseEvent e, boolean newValue) {
+            //Left click
             if (e.getButton() == MouseEvent.BUTTON1) {
                 leftClickLocation = getLocation(e, newValue);
             }
 
+            //Right click
             if (e.getButton() == MouseEvent.BUTTON3) {
                 rightClickLocation = getLocation(e, newValue);
             }
         }
 
+        /**
+         * Returns the location on the screen of the mouse event
+         * Returns null if the mouse button was released
+         * @param e The mouse event
+         * @param newValue True if pressed / False if released
+         * @return The location on the screen / null if the mouse button was released
+         */
         private Point getLocation(MouseEvent e, boolean newValue) {
             if (!newValue) {
                 return null;
@@ -93,7 +186,11 @@ public class Player extends CharacterController {
         }
     };
 
+    /**
+     * Constructor for the player controller
+     */
     public Player() {
+        //Adds the listeners
         Game.getInstance().addKeyListener(kl);
         Game.getInstance().addMouseListener(ml);
     }
@@ -103,18 +200,28 @@ public class Player extends CharacterController {
         return velocities;
     }
 
+    @Override
     public Mechanic getMechanic() {
         return mechanic;
     }
 
+    @Override
     public Point2D.Double getFirstAttackVector() {
         return firstAttackVector;
     }
 
+    @Override
     public Point2D.Double getSecondAttackVector() {
         return secondAttackVector;
     }
 
+    /**
+     * Returns the attack vector
+     * @param x The character x coord
+     * @param y The character y coord
+     * @param clickLocation The click location
+     * @return The attack vector
+     */
     private Point2D.Double getAttackVector(double x, double y, Point clickLocation) {
         if (clickLocation != null) {
             Point2D.Double p = new Point2D.Double(clickLocation.x - x, y - clickLocation.y);

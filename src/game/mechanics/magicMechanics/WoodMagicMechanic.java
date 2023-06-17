@@ -9,6 +9,9 @@ import game.screens.Game;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Class representing a wood magic mechanic
+ */
 public class WoodMagicMechanic extends MagicMechanic {
     private static final WoodMagicMechanic instance = new WoodMagicMechanic();
     public static WoodMagicMechanic getInstance() {
@@ -25,9 +28,10 @@ public class WoodMagicMechanic extends MagicMechanic {
 
     @Override
     public void createSecondAttack(GameObject creator, Point2D.Double dirVect) {
+        //Restores 30 HP
         if (creator.getType() == GameObjectType.Character) {
             Character go = (Character) creator;
-            go.addHealth(25);
+            go.addHealth(30);
         }
     }
 
@@ -38,6 +42,6 @@ public class WoodMagicMechanic extends MagicMechanic {
 
     @Override
     public int secondAttackManaCost() {
-        return 100;
+        return 90;
     }
 }

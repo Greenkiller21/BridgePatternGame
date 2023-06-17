@@ -8,6 +8,9 @@ import game.screens.Game;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Class representing a slingshot mechanic
+ */
 public class SlingshotMechanic extends PhysicalMechanic {
     private static final SlingshotMechanic instance = new SlingshotMechanic();
     public static SlingshotMechanic getInstance() {

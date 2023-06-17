@@ -6,6 +6,9 @@ import game.projectiles.Projectile;
 
 import java.awt.geom.Point2D;
 
+/**
+ * Abstract class representing a stone projectile
+ */
 public abstract class Stone extends Projectile {
     public Stone(double x, double y, Point2D.Double dirVect, GameObject creator) {
         super(x, y, dirVect, creator);
