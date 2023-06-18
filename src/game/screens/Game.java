@@ -62,7 +62,7 @@ public class Game extends Canvas implements Runnable {
             double x = Utils.getRandom().nextInt(1, screenWidth);
             double y = Utils.getRandom().nextInt(1, screenHeight);
 
-            playerCharacter = playerCreator.apply(x, y, IceMagicMechanic.getInstance());
+            playerCharacter = playerCreator.apply(x, y, GameHandler.getMechanics()[0]);
         } while (!playerCharacter.isGeneratedPositionValid());
 
         playerCharacter.setController(new Player());
